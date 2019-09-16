@@ -1,11 +1,12 @@
 package com.example.flappypenguin;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
+import android.content.Intent;
+import android.view.View;
 
-public class MenuActivity extends AppCompatActivity {
-
+public class MenuActivity extends AppCompatActivity
+{
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -13,8 +14,9 @@ public class MenuActivity extends AppCompatActivity {
         setContentView(R.layout.activity_menu);
     }
 
-    private void goToGameScreen()
+    public void goToGameScreen(View view)
     {
-        final Intent game = new Intent(this, MainActivity.class);
+        final Intent game = new Intent(MenuActivity.this, MainActivity.class);
+        startActivity(game);
     }
 }
