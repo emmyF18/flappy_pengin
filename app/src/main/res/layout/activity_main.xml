@@ -19,10 +19,11 @@
 
     <ImageView
         android:id="@+id/imageView3"
-        android:layout_width="159dp"
-        android:layout_height="149dp"
+        android:layout_width="65dp"
+        android:layout_height="69dp"
+        android:scaleType="centerInside"
         app:srcCompat="@drawable/penguin_sprite"
-        tools:layout_editor_absoluteX="126dp"
-        tools:layout_editor_absoluteY="291dp" />
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="285dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
