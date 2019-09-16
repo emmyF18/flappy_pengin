@@ -7,44 +7,49 @@
     tools:context=".MenuActivity">
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/menuBackground"
         android:layout_width="528dp"
         android:layout_height="788dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.504"
+        app:layout_constraintHorizontal_bias="0.714"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.508"
         app:srcCompat="@drawable/menu_background" />
 
-    <ImageButton
-        android:id="@+id/imageButton"
-        android:layout_width="161dp"
-        android:layout_height="77dp"
-        android:background="#00FFFFFF"
-        android:tint="#00FFFFFF"
-        app:srcCompat="@drawable/play_button"
-        tools:layout_editor_absoluteX="234dp"
-        tools:layout_editor_absoluteY="407dp" />
+    <ImageView
+        android:id="@+id/menuLogo"
+        android:layout_width="312dp"
+        android:layout_height="234dp"
+        android:layout_marginTop="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/logo" />
 
     <ImageButton
-        android:id="@+id/imageButton2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="116dp"
-        android:layout_marginRight="116dp"
-        android:layout_marginBottom="24dp"
+        android:id="@+id/playButton"
+        android:layout_width="175dp"
+        android:layout_height="91dp"
         android:background="#00FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/score_button" />
+        app:layout_constraintHorizontal_bias="0.913"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.652"
+        app:srcCompat="@drawable/play_button" />
 
-    <ImageView
-        android:id="@+id/imageView2"
+    <ImageButton
+        android:id="@+id/scoreButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/logo"
-        tools:layout_editor_absoluteX="64dp"
-        tools:layout_editor_absoluteY="35dp" />
+        android:background="#00FFFFFF"
+        app:layout_constraintBottom_toBottomOf="@+id/menuBackground"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.845"
+        app:srcCompat="@drawable/score_button" />
 </androidx.constraintlayout.widget.ConstraintLayout>
