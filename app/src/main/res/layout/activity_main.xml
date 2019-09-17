@@ -12,18 +12,29 @@
         android:layout_height="840dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.349"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.504"
+        app:layout_constraintVertical_bias="0.385"
         app:srcCompat="@drawable/game_background" />
 
     <ImageView
-        android:id="@+id/imageView3"
+        android:id="@+id/penguin"
         android:layout_width="65dp"
         android:layout_height="69dp"
         android:scaleType="centerInside"
         app:srcCompat="@drawable/penguin_sprite"
         tools:layout_editor_absoluteX="16dp"
         tools:layout_editor_absoluteY="285dp" />
+
+    <ImageSwitcher
+        android:id="@+id/countdown"
+        android:layout_width="164dp"
+        android:layout_height="134dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.096" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
