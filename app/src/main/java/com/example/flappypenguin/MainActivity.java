@@ -2,6 +2,7 @@ package com.example.flappypenguin;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.animation.ObjectAnimator;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.content.Intent;
@@ -13,6 +14,9 @@ import android.widget.ImageSwitcher;
 import android.widget.ImageView;
 import android.widget.ViewSwitcher;
 import android.view.View.OnClickListener;
+
+import com.daasuu.ei.Ease;
+import com.daasuu.ei.EasingInterpolator;
 
 public class MainActivity extends AppCompatActivity
 {
@@ -95,7 +99,21 @@ public class MainActivity extends AppCompatActivity
 
         while(imageButton.getY() > findViewById(R.id.gameBackground).getBottom())
         {
-            imageButton.setY(imageButton.getY() + 50);
+            bounceUp(imageButton);
+
+           // imageButton.setY(imageButton.getY() + 50);
         }
     }
+<<<<<<< HEAD
+=======
+    private void bounceUp(View targetView)
+    {
+        ObjectAnimator animator = ObjectAnimator.ofFloat(targetView,"translationY",0,50,25);
+        animator.setInterpolator(new EasingInterpolator(Ease.BOUNCE_IN_OUT));
+        animator.setStartDelay(500);
+        animator.setDuration(1500);
+        animator.start();
+    }
+
+>>>>>>> 4a1b67bc72626804fae7e6c827254ea187af69bd
 }
