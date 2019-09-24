@@ -20,10 +20,10 @@ import com.daasuu.ei.EasingInterpolator;
 
 public class MainActivity extends AppCompatActivity
 {
-    private Integer[] countdownImages = {R.drawable.countdown_3, R.drawable.countdown_2, R.drawable.countdown_1, R.drawable.countdown_start, R.drawable.blank};
-    private ImageSwitcher imageSwitcher;
-    private ImageButton imageButton;
-    private int position = 0;
+    private Integer[] countdownImagesList = {R.drawable.countdown_3, R.drawable.countdown_2, R.drawable.countdown_1, R.drawable.countdown_start, R.drawable.blank};
+    private ImageSwitcher countdownImageSwitcher;
+    private ImageButton penguinImage;
+    private int countdownImagesPosition = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -33,21 +33,21 @@ public class MainActivity extends AppCompatActivity
 
         // SOURCE: https://www.tutlane.com/tutorial/android/android-imageswitcher-with-examples
         listenForButton();
-        imageSwitcher = findViewById(R.id.countdown);
-        imageSwitcher.setFactory(new ViewSwitcher.ViewFactory()
+        countdownImageSwitcher = findViewById(R.id.countdown);
+        countdownImageSwitcher.setFactory(new ViewSwitcher.ViewFactory()
         {
             @Override
             public View makeView()
             {
                 ImageView imageView = new ImageView(MainActivity.this);
-                imageView.setImageResource(countdownImages[position]);
+                imageView.setImageResource(countdownImagesList[countdownImagesPosition]);
 
                 return imageView;
             }
         });
 
-        imageSwitcher.setInAnimation(this, android.R.anim.fade_in);
-        imageSwitcher.setOutAnimation(this, android.R.anim.fade_out);
+        countdownImageSwitcher.setInAnimation(this, android.R.anim.fade_in);
+        countdownImageSwitcher.setOutAnimation(this, android.R.anim.fade_out);
         startCountdown();
 
         moveDown();
@@ -62,31 +62,32 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onTick(long millisUntilFinished)
             {
-                imageSwitcher.setImageResource(countdownImages[position]);
+                countdownImageSwitcher.setImageResource(countdownImagesList[countdownImagesPosition]);
 
-                if (position < countdownImages.length)
+                if (countdownImagesPosition < countdownImagesList.length)
                 {
-                    position++;
+                    countdownImagesPosition++;
                 }
             }
 
             @Override
             public void onFinish()
             {
-                imageSwitcher.setImageResource(countdownImages[countdownImages.length - 1]);
+                countdownImageSwitcher.setImageResource(countdownImagesList[countdownImagesList.length - 1]);
             }
         }.start();
     }
 
     private void listenForButton()
     {
-        imageButton = findViewById(R.id.penguin);
-        imageButton.setOnClickListener(new OnClickListener()
+        penguinImage = findViewById(R.id.penguin);
+
+        penguinImage.setOnClickListener(new OnClickListener()
         {
             @Override
             public void onClick(View view)
             {
-                imageButton.setY(imageButton.getY()-50);
+                penguinImage.setY(penguinImage.getY() - 50);
             }
 
         });
@@ -95,22 +96,21 @@ public class MainActivity extends AppCompatActivity
     //click code from https://www.mkyong.com/android/android-imagebutton-example/
     private void moveDown()
     {
-        imageButton = findViewById(R.id.penguin);
+        penguinImage = findViewById(R.id.penguin);
 
-        while(imageButton.getY() > findViewById(R.id.gameBackground).getBottom())
+        while(penguinImage.getY() > findViewById(R.id.gameBackground).getBottom())
         {
-            bounceUp(imageButton);
-
+            bounceUp(penguinImage);
            // imageButton.setY(imageButton.getY() + 50);
         }
     }
 
     private void bounceUp(View targetView)
     {
-        ObjectAnimator animator = ObjectAnimator.ofFloat(targetView,"translationY",0,50,25);
-        animator.setInterpolator(new EasingInterpolator(Ease.BOUNCE_IN_OUT));
-        animator.setStartDelay(500);
-        animator.setDuration(1500);
-        animator.start();
+        ObjectAnimator movePenguinUp = ObjectAnimator.ofFloat(targetView,"translationY",0, 50, 25);
+        movePenguinUp.setInterpolator(new EasingInterpolator(Ease.BOUNCE_IN_OUT));
+        movePenguinUp.setStartDelay(500);
+        movePenguinUp.setDuration(1500);
+        movePenguinUp.start();
     }
 }
