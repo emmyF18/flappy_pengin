@@ -104,8 +104,7 @@ public class MainActivity extends AppCompatActivity
            // imageButton.setY(imageButton.getY() + 50);
         }
     }
-<<<<<<< HEAD
-=======
+
     private void bounceUp(View targetView)
     {
         ObjectAnimator animator = ObjectAnimator.ofFloat(targetView,"translationY",0,50,25);
@@ -114,6 +113,4 @@ public class MainActivity extends AppCompatActivity
         animator.setDuration(1500);
         animator.start();
     }
-
->>>>>>> 4a1b67bc72626804fae7e6c827254ea187af69bd
 }
