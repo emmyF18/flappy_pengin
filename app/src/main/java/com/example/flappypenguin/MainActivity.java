@@ -16,7 +16,7 @@ import android.view.View.OnClickListener;
 
 public class MainActivity extends AppCompatActivity
 {
-    private Integer[] countdownImages = {R.drawable.countdown_3, R.drawable.countdown_2, R.drawable.countdown_1, R.drawable.countdown_start};
+    private Integer[] countdownImages = {R.drawable.countdown_3, R.drawable.countdown_2, R.drawable.countdown_1, R.drawable.countdown_start, R.drawable.blank};
     private ImageSwitcher imageSwitcher;
     private ImageButton imageButton;
     private int position = 0;
@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // SOURCE: https://www.tutlane.com/tutorial/android/android-imageswitcher-with-examples
         listenForButton();
         imageSwitcher = findViewById(R.id.countdown);
         imageSwitcher.setFactory(new ViewSwitcher.ViewFactory()
@@ -40,19 +41,19 @@ public class MainActivity extends AppCompatActivity
                 return imageView;
             }
         });
+
         imageSwitcher.setInAnimation(this, android.R.anim.fade_in);
         imageSwitcher.setOutAnimation(this, android.R.anim.fade_out);
-
-        // SOURCE: https://www.tutlane.com/tutorial/android/android-imageswitcher-with-examples
-
         startCountdown();
-        moveDown();
 
+        moveDown();
     }
 
+    // SOURCE: https://www.tutlane.com/tutorial/android/android-imageswitcher-with-examples
+    // SOURCE: https://abhiandroid.com/ui/countdown-timer
     private void startCountdown()
     {
-        new CountDownTimer(3000, 1000)
+        new CountDownTimer(4000, 1000)
         {
             @Override
             public void onTick(long millisUntilFinished)
@@ -63,8 +64,6 @@ public class MainActivity extends AppCompatActivity
                 {
                     position++;
                 }
-
-                // SOURCE: https://www.tutlane.com/tutorial/android/android-imageswitcher-with-examples
             }
 
             @Override
@@ -74,7 +73,7 @@ public class MainActivity extends AppCompatActivity
             }
         }.start();
     }
-    // SOURCE: https://abhiandroid.com/ui/countdown-timer
+
     private void listenForButton()
     {
         imageButton = findViewById(R.id.penguin);
@@ -88,14 +87,15 @@ public class MainActivity extends AppCompatActivity
 
         });
     }
+
     //click code from https://www.mkyong.com/android/android-imagebutton-example/
     private void moveDown()
     {
         imageButton = findViewById(R.id.penguin);
+
         while(imageButton.getY() > findViewById(R.id.gameBackground).getBottom())
         {
             imageButton.setY(imageButton.getY() + 50);
         }
     }
-
 }

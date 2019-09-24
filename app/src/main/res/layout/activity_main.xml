@@ -13,10 +13,10 @@
         android:contentDescription="@string/app_name"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.349"
+        app:layout_constraintHorizontal_bias="0.358"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.385"
+        app:layout_constraintVertical_bias="0.504"
         app:srcCompat="@drawable/game_background" />
 
     <ImageSwitcher
@@ -31,14 +31,15 @@
 
     <ImageButton
         android:id="@+id/penguin"
-        android:layout_width="163dp"
-        android:layout_height="217dp"
+        android:layout_width="101dp"
+        android:layout_height="129dp"
         android:background="@drawable/penguin_sprite"
         android:contentDescription="@string/app_name"
         app:layout_constraintBottom_toBottomOf="@+id/gameBackground"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/countdown"
+        app:layout_constraintVertical_bias="0.594"
         app:srcCompat="@android:color/transparent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
