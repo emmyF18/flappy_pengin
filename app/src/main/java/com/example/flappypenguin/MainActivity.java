@@ -9,6 +9,7 @@ import android.view.View.OnClickListener;
 import android.widget.ImageButton;
 import android.widget.ImageSwitcher;
 import android.widget.ImageView;
+import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,42 +23,41 @@ public class MainActivity extends AppCompatActivity {
     final private Integer[] obstacleImagesList = {R.drawable.ice_obstacle, R.drawable.ice_obstacle2, R.drawable.snowman_obstacle};
     final private Integer[] penguinFlapLists = {R.drawable.penguin_sprite, R.drawable.snowman_obstacle};//TODO:change to flap penguin
     final Handler handler = new Handler();
+    final int penguinFallSpeed = 4;
+    final int penguinFlySpeed = 200;
+    boolean gameOver = false;
     private ImageSwitcher countdownImageSwitcher;
     private ImageButton penguinImage;
     private ImageView imageView;
     private int countdownImagesPosition = 0;
     private int randomTimer;
     private int randomObstacle;
-    private ImageView background;
     private ImageSwitcher penguinSwitcher;
+    private int height;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        // SOURCE: https://www.tutlane.com/tutorial/android/android-imageswitcher-with-examples
         listenForButton();
-
         countdownImageSwitcher = findViewById(R.id.countdown);
         countdownImageSwitcher.setFactory(new ViewSwitcher.ViewFactory() {
             @Override
             public View makeView() {
                 imageView = new ImageView(MainActivity.this);
                 imageView.setImageResource(countdownImagesList[countdownImagesPosition]);
-
                 return imageView;
             }
         });
-
         countdownImageSwitcher.setInAnimation(this, android.R.anim.fade_in);
         countdownImageSwitcher.setOutAnimation(this, android.R.anim.fade_out);
         startCountdown();
 
         imageView = findViewById(R.id.obstacles);
         //displayObstaclesRandomly();
-    }
 
+    }
     // SOURCE: https://www.tutlane.com/tutorial/android/android-imageswitcher-with-examples
     // SOURCE: https://abhiandroid.com/ui/countdown-timer
     private void startCountdown() {
@@ -89,20 +89,19 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
-
-    private void moveUp() {
+    private void moveUp()
+    {
         penguinImage = findViewById(R.id.penguin);
-        penguinImage.setY(penguinImage.getY() - 100);
-        /*penguinSwitcher.setFactory(new ViewSwitcher.ViewFactory() {
-            @Override
-            public View makeView() {
-                ImageView penguinImg = new ImageView(MainActivity.this);
-                penguinImg.setImageResource(penguinFlapLists[1]);
-               return penguinImg;
-            }
-        });
-         */
+        height = findViewById(R.id.gameScreen).getHeight();
+        if((penguinImage.getY() >= 0)&& !gameOver)
+        {
+            penguinImage.setY(penguinImage.getY() - penguinFlySpeed);
+            Log.d("Y Value Up ", penguinImage.getY() + " Height: "+ height);
+        }
+        else
+        {
+            gameOver = true;
+        }
 
     }
     // SOURCE: https://stackoverflow.com/questions/21559405/how-to-display-image-automatically-after-a-random-time
@@ -122,7 +121,6 @@ public class MainActivity extends AppCompatActivity {
         };
         handler.postDelayed(runnable, randomTimer);
     }
-
     //timer code example: https://examples.javacodegeeks.com/android/core/activity/android-timertask-example/
     private void movePenguinDown()
     {
@@ -132,17 +130,27 @@ public class MainActivity extends AppCompatActivity {
     }
     private TimerTask createPenguinTimer()
     {
-         return new TimerTask() {
+         return new TimerTask()
+         {
             @Override
-            public void run() {
-                handler.post(new Runnable() {
-                    public void run() {
+            public void run()
+            {
+                handler.post(new Runnable()
+                {
+                    public void run()
+                    {
                         penguinImage = findViewById(R.id.penguin);
-                        //while(penguinImage.getY() > background.getHeight())
-                        //{
-                           penguinImage.setY(penguinImage.getY()+5);
-                            Log.d("Y Value: ", penguinImage.getY() + "");
-                        //}
+                        height = findViewById(R.id.gameScreen).getHeight();
+                        if((penguinImage.getY() < height-300) && !gameOver) //TODO: figure out why this is 300 off
+                        {
+                           penguinImage.setY(penguinImage.getY()+penguinFallSpeed);
+                           //Log.d("Y Value Down ", penguinImage.getY() + " Height: "+ height);
+                        }
+                        else
+                        {
+                            Toast.makeText(getApplicationContext(),"Game Over!", Toast.LENGTH_LONG).show();
+                            gameOver = true;
+                        }
 
                     }
                 });
