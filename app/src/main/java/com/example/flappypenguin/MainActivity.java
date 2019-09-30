@@ -1,6 +1,5 @@
 package com.example.flappypenguin;
 
-import android.animation.ObjectAnimator;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -14,9 +13,6 @@ import android.widget.ViewSwitcher;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.daasuu.ei.Ease;
-import com.daasuu.ei.EasingInterpolator;
-
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -24,6 +20,7 @@ import java.util.TimerTask;
 public class MainActivity extends AppCompatActivity {
     final private Integer[] countdownImagesList = {R.drawable.countdown_3, R.drawable.countdown_2, R.drawable.countdown_1, R.drawable.countdown_start, R.drawable.blank};
     final private Integer[] obstacleImagesList = {R.drawable.ice_obstacle, R.drawable.ice_obstacle2, R.drawable.snowman_obstacle};
+    final private Integer[] penguinFlapLists = {R.drawable.penguin_sprite, R.drawable.snowman_obstacle};//TODO:change to flap penguin
     final Handler handler = new Handler();
     private ImageSwitcher countdownImageSwitcher;
     private ImageButton penguinImage;
@@ -32,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     private int randomTimer;
     private int randomObstacle;
     private ImageView background;
+    private ImageSwitcher penguinSwitcher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,8 +56,6 @@ public class MainActivity extends AppCompatActivity {
 
         imageView = findViewById(R.id.obstacles);
         //displayObstaclesRandomly();
-
-        moveUp();
     }
 
     // SOURCE: https://www.tutlane.com/tutorial/android/android-imageswitcher-with-examples
@@ -82,38 +78,33 @@ public class MainActivity extends AppCompatActivity {
             }
         }.start();
     }
-
+    //click code from https://www.mkyong.com/android/android-imagebutton-example/
     private void listenForButton() {
         penguinImage = findViewById(R.id.penguin);
 
         penguinImage.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                penguinImage.setY(penguinImage.getY() - 100);
+                moveUp();
             }
-
         });
     }
 
-    //click code from https://www.mkyong.com/android/android-imagebutton-example/
+
     private void moveUp() {
         penguinImage = findViewById(R.id.penguin);
+        penguinImage.setY(penguinImage.getY() - 100);
+        /*penguinSwitcher.setFactory(new ViewSwitcher.ViewFactory() {
+            @Override
+            public View makeView() {
+                ImageView penguinImg = new ImageView(MainActivity.this);
+                penguinImg.setImageResource(penguinFlapLists[1]);
+               return penguinImg;
+            }
+        });
+         */
 
-        while (penguinImage.getY() > findViewById(R.id.gameBackground).getBottom()) {
-            //bounceUp(penguinImage);
-            penguinImage.setY(penguinImage.getY() + 50);
-        }
     }
-
-    //animation code from: https://sproutsocial.com/insights/bounce-animation-for-android/
-    private void bounceUp(View targetView) {
-        ObjectAnimator movePenguinUp = ObjectAnimator.ofFloat(targetView, "translationY", 0, 50, 25);
-        movePenguinUp.setInterpolator(new EasingInterpolator(Ease.BOUNCE_IN_OUT));
-        movePenguinUp.setStartDelay(500);
-        movePenguinUp.setDuration(1500);
-        movePenguinUp.start();
-    }
-
     // SOURCE: https://stackoverflow.com/questions/21559405/how-to-display-image-automatically-after-a-random-time
     private void displayObstaclesRandomly() {
         final Random random = new Random();
@@ -133,12 +124,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //timer code example: https://examples.javacodegeeks.com/android/core/activity/android-timertask-example/
-    private void movePenguinDown() {
+    private void movePenguinDown()
+    {
         TimerTask timerTask = createPenguinTimer();
         Timer penguinDown = new Timer();
         penguinDown.schedule(timerTask,0, 10);
     }
-    private TimerTask createPenguinTimer() {
+    private TimerTask createPenguinTimer()
+    {
          return new TimerTask() {
             @Override
             public void run() {
@@ -147,11 +140,10 @@ public class MainActivity extends AppCompatActivity {
                         penguinImage = findViewById(R.id.penguin);
                         //while(penguinImage.getY() > background.getHeight())
                         //{
-                           penguinImage.setY(penguinImage.getY()+1);
+                           penguinImage.setY(penguinImage.getY()+5);
                             Log.d("Y Value: ", penguinImage.getY() + "");
                         //}
-                        //Toast toast = Toast.makeText(getApplicationContext(), "Y: " +penguinImage.getY(), Toast.LENGTH_SHORT);
-                        //toast.show();
+
                     }
                 });
             }
