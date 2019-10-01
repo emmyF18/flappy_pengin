@@ -7,9 +7,11 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.view.View;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.ImageSwitcher;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ViewSwitcher;
 import android.view.View.OnClickListener;
 
@@ -142,5 +144,13 @@ public class MainActivity extends AppCompatActivity
         };
 
         handler.postDelayed(runnable, randomTimer);
+    }
+
+    private void makeObstaclesScroll()
+    {
+        LinearLayout linear = findViewById(R.id.linear);
+        HorizontalScrollView horizontal_scroll = findViewById(R.id.horizontal_scroll);
+
+        linear.addView();
     }
 }
