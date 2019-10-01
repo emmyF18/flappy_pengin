@@ -6,8 +6,7 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
-import android.view.animation.LinearInterpolator;
-import android.view.animation.TranslateAnimation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 import android.widget.ImageSwitcher;
 import android.widget.ImageView;
@@ -78,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
             public void onFinish() {
                 countdownImageSwitcher.setImageResource(countdownImagesList[countdownImagesList.length - 1]);
                 movePenguinDown();
+                countdownImageSwitcher.setVisibility(View.INVISIBLE);
             }
         }.start();
     }
@@ -124,24 +124,21 @@ public class MainActivity extends AppCompatActivity {
             {
                 makeObstaclesScroll();
                 obstacleImage.setImageResource(obstacleImagesList[randomObstacle]);
-                handler.postDelayed(this, 5000);
+                handler.postDelayed(this, 7000);
                 randomObstacle = random.nextInt(obstacleImagesList.length);
             }
         };
-        handler.postDelayed(runnable, 5000);
+        handler.postDelayed(runnable, 7000);
     }
 
-    // SOURCE: https://stackoverflow.com/questions/18352253/android-autoscroll-imageview
+    // SOURCE: https://stackoverflow.com/questions/11268033/delays-within-the-animation-translateanimation
     private void makeObstaclesScroll()
     {
-        Animation translateAnimation = new TranslateAnimation(TranslateAnimation.ABSOLUTE, 1500, TranslateAnimation.ABSOLUTE, -1500, TranslateAnimation.ABSOLUTE, 0f, TranslateAnimation.ABSOLUTE, 0f);
-        translateAnimation.setDuration(5000);
-        translateAnimation.setRepeatCount(-1);
-        translateAnimation.setInterpolator(new LinearInterpolator());
+        Animation animation = AnimationUtils.loadAnimation(this, R.anim.anim_img);
+        animation.setFillAfter(true);
+        animation.reset();
 
-        // obstacleImage.setLayerType(View.LAYER_TYPE_HARDWARE, null);
-        obstacleImage.startAnimation(translateAnimation);
-        // obstacleImage.setLayerType(View.LAYER_TYPE_NONE, null);
+        obstacleImage.startAnimation(animation);
     } // TODO: Fix lag
 
     //timer code example: https://examples.javacodegeeks.com/android/core/activity/android-timertask-example/
@@ -172,8 +169,8 @@ public class MainActivity extends AppCompatActivity {
                         }
                         else
                         {
-                            Toast.makeText(getApplicationContext(),"Game Over!", Toast.LENGTH_LONG).show();
-                            gameOver = true;
+                            // Toast.makeText(getApplicationContext(),"Game Over!", Toast.LENGTH_LONG).show();
+                            // gameOver = true;
                         }
 
                     }
