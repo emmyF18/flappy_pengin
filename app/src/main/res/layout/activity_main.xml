@@ -30,30 +30,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.096" />
 
-    <ImageButton
-        android:id="@+id/penguin"
-        android:layout_width="101dp"
-        android:layout_height="129dp"
-        android:background="@drawable/penguin_sprite"
-        android:contentDescription="@string/app_name"
-        app:layout_constraintBottom_toBottomOf="@+id/gameBackground"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/countdown"
-        app:layout_constraintVertical_bias="0.302"
-        app:srcCompat="@android:color/transparent" />
-
-    <!--<ImageView
-        android:id="@+id/obstacles"
-        android:layout_width="381dp"
-        android:layout_height="0dp"
-        android:adjustViewBounds="false"
-        android:scaleType="fitXY"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />-->
-
     <HorizontalScrollView
         android:id="@+id/horizontal_scroll"
         android:layout_width="match_parent"
@@ -68,7 +44,7 @@
 
             <ImageView
                 android:id="@+id/obstacles"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="fill_parent"
                 android:scaleType="fitXY"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -79,5 +55,18 @@
         </LinearLayout>
 
     </HorizontalScrollView>
+
+    <ImageButton
+        android:id="@+id/penguin"
+        android:layout_width="101dp"
+        android:layout_height="129dp"
+        android:background="@drawable/penguin_sprite"
+        android:contentDescription="@string/app_name"
+        app:layout_constraintBottom_toBottomOf="@+id/gameBackground"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/countdown"
+        app:layout_constraintVertical_bias="0.302"
+        app:srcCompat="@android:color/transparent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

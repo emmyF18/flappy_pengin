@@ -5,19 +5,14 @@ import android.os.CountDownTimer;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
-<<<<<<< HEAD
-import android.widget.HorizontalScrollView;
+import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.TranslateAnimation;
 import android.widget.ImageButton;
 import android.widget.ImageSwitcher;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-=======
 import android.view.View.OnClickListener;
-import android.widget.ImageButton;
-import android.widget.ImageSwitcher;
-import android.widget.ImageView;
 import android.widget.Toast;
->>>>>>> 5c8b98d744bee5d3f1c15b7de3b53edfdac6ef02
 import android.widget.ViewSwitcher;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -36,9 +31,9 @@ public class MainActivity extends AppCompatActivity {
     boolean gameOver = false;
     private ImageSwitcher countdownImageSwitcher;
     private ImageButton penguinImage;
-    private ImageView imageView;
+    private ImageView countdownImage;
+    private ImageView obstacleImage;
     private int countdownImagesPosition = 0;
-    private int randomTimer;
     private int randomObstacle;
     private ImageSwitcher penguinSwitcher;
     private int height;
@@ -53,19 +48,19 @@ public class MainActivity extends AppCompatActivity {
         countdownImageSwitcher.setFactory(new ViewSwitcher.ViewFactory() {
             @Override
             public View makeView() {
-                imageView = new ImageView(MainActivity.this);
-                imageView.setImageResource(countdownImagesList[countdownImagesPosition]);
-                return imageView;
+                countdownImage = new ImageView(MainActivity.this);
+                countdownImage.setImageResource(countdownImagesList[countdownImagesPosition]);
+                return countdownImage;
             }
         });
         countdownImageSwitcher.setInAnimation(this, android.R.anim.fade_in);
         countdownImageSwitcher.setOutAnimation(this, android.R.anim.fade_out);
         startCountdown();
 
-        imageView = findViewById(R.id.obstacles);
-        //displayObstaclesRandomly();
-
+        obstacleImage = findViewById(R.id.obstacles);
+        displayObstaclesRandomly();
     }
+
     // SOURCE: https://www.tutlane.com/tutorial/android/android-imageswitcher-with-examples
     // SOURCE: https://abhiandroid.com/ui/countdown-timer
     private void startCountdown() {
@@ -86,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }.start();
     }
+
     //click code from https://www.mkyong.com/android/android-imagebutton-example/
     private void listenForButton() {
         penguinImage = findViewById(R.id.penguin);
@@ -97,6 +93,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
     private void moveUp()
     {
         penguinImage = findViewById(R.id.penguin);
@@ -112,33 +109,41 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
+
     // SOURCE: https://stackoverflow.com/questions/21559405/how-to-display-image-automatically-after-a-random-time
-    private void displayObstaclesRandomly() {
+    private void displayObstaclesRandomly()
+    {
         final Random random = new Random();
-        randomTimer = random.nextInt(4000 - 3000) + 3000;
         randomObstacle = random.nextInt(obstacleImagesList.length);
 
         final Handler handler = new Handler();
-        Runnable runnable = new Runnable() {
+        Runnable runnable = new Runnable()
+        {
             @Override
-            public void run() {
-                imageView.setImageResource(obstacleImagesList[randomObstacle]);
-                handler.postDelayed(this, randomTimer);
+            public void run()
+            {
+                makeObstaclesScroll();
+                obstacleImage.setImageResource(obstacleImagesList[randomObstacle]);
+                handler.postDelayed(this, 5000);
                 randomObstacle = random.nextInt(obstacleImagesList.length);
             }
         };
-        handler.postDelayed(runnable, randomTimer);
+        handler.postDelayed(runnable, 5000);
     }
-<<<<<<< HEAD
 
+    // SOURCE: https://stackoverflow.com/questions/18352253/android-autoscroll-imageview
     private void makeObstaclesScroll()
     {
-        LinearLayout linear = findViewById(R.id.linear);
-        HorizontalScrollView horizontal_scroll = findViewById(R.id.horizontal_scroll);
+        Animation translateAnimation = new TranslateAnimation(TranslateAnimation.ABSOLUTE, 1500, TranslateAnimation.ABSOLUTE, -1500, TranslateAnimation.ABSOLUTE, 0f, TranslateAnimation.ABSOLUTE, 0f);
+        translateAnimation.setDuration(5000);
+        translateAnimation.setRepeatCount(-1);
+        translateAnimation.setInterpolator(new LinearInterpolator());
 
-        linear.addView();
-    }
-=======
+        // obstacleImage.setLayerType(View.LAYER_TYPE_HARDWARE, null);
+        obstacleImage.startAnimation(translateAnimation);
+        // obstacleImage.setLayerType(View.LAYER_TYPE_NONE, null);
+    } // TODO: Fix lag
+
     //timer code example: https://examples.javacodegeeks.com/android/core/activity/android-timertask-example/
     private void movePenguinDown()
     {
@@ -146,6 +151,7 @@ public class MainActivity extends AppCompatActivity {
         Timer penguinDown = new Timer();
         penguinDown.schedule(timerTask,0, 10);
     }
+
     private TimerTask createPenguinTimer()
     {
          return new TimerTask()
@@ -176,6 +182,4 @@ public class MainActivity extends AppCompatActivity {
         };
 
     }
-
->>>>>>> 5c8b98d744bee5d3f1c15b7de3b53edfdac6ef02
 }
