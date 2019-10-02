@@ -57,6 +57,8 @@ public class MainActivity extends AppCompatActivity {
         startCountdown();
 
         obstacleImage = findViewById(R.id.obstacles);
+        imageView = findViewById(R.id.obstacles);
+        gameOver = false;
         displayObstaclesRandomly();
     }
 
