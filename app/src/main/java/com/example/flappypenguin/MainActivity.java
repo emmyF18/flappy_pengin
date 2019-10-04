@@ -57,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
         startCountdown();
 
         obstacleImage = findViewById(R.id.obstacles);
+        gameOver = false;
         displayObstaclesRandomly();
     }
 
@@ -169,8 +170,7 @@ public class MainActivity extends AppCompatActivity {
                         }
                         else
                         {
-                            // Toast.makeText(getApplicationContext(),"Game Over!", Toast.LENGTH_LONG).show();
-                            // gameOver = true;
+                            gameOver = true;
                         }
 
                     }
