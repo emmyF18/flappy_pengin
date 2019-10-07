@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     private int randomObstacle;
     private ImageSwitcher penguinSwitcher;
     private int height;
+    private boolean pause = false;
 
 
     @Override
@@ -59,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
         obstacleImage = findViewById(R.id.obstacles);
         gameOver = false;
         displayObstaclesRandomly();
+        displayPauseScreen();
     }
 
     // SOURCE: https://www.tutlane.com/tutorial/android/android-imageswitcher-with-examples
@@ -140,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
         animation.reset();
 
         obstacleImage.startAnimation(animation);
-    } // TODO: Fix lag
+    }
 
     //timer code example: https://examples.javacodegeeks.com/android/core/activity/android-timertask-example/
     private void movePenguinDown()
@@ -180,8 +182,19 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    // SOURCE: https://stackoverflow.com/questions/26294781/display-image-after-button-click-in-android
     private void displayPauseScreen()
     {
+        ImageButton pauseButton = findViewById(R.id.pause_button);
 
+        pauseButton.setOnClickListener(new OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                ImageView pauseMenu = findViewById(R.id.pause_menu);
+                pauseMenu.setVisibility(View.VISIBLE);
+            }
+        });
     }
 }
