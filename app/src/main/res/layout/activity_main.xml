@@ -71,7 +71,7 @@
         app:srcCompat="@android:color/transparent" />
 
     <ImageButton
-        android:id="@+id/imageButton4"
+        android:id="@+id/pause"
         android:layout_width="63dp"
         android:layout_height="63dp"
         android:layout_marginStart="51dp"
@@ -82,6 +82,6 @@
         android:scaleType="fitStart"
         app:layout_constraintStart_toStartOf="@+id/gameBackground"
         app:layout_constraintTop_toTopOf="@+id/gameBackground"
-        app:srcCompat="@drawable/exit_button" />
+        app:srcCompat="@drawable/pause_button" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
