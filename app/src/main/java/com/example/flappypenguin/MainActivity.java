@@ -5,13 +5,12 @@ import android.os.CountDownTimer;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 import android.widget.ImageSwitcher;
 import android.widget.ImageView;
-import android.view.View.OnClickListener;
-import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,8 +24,8 @@ public class MainActivity extends AppCompatActivity {
     final private Integer[] obstacleImagesList = {R.drawable.ice_obstacle, R.drawable.ice_obstacle2, R.drawable.snowman_obstacle};
     final private Integer[] penguinFlapLists = {R.drawable.penguin_sprite, R.drawable.snowman_obstacle};//TODO:change to flap penguin
     final Handler handler = new Handler();
-    final int penguinFallSpeed = 4;
-    final int penguinFlySpeed = 200;
+    final float penguinFallSpeed = 3.2f;
+    final int penguinFlySpeed = 250;
     boolean gameOver = false;
     private ImageSwitcher countdownImageSwitcher;
     private ImageButton penguinImage;
@@ -99,15 +98,21 @@ public class MainActivity extends AppCompatActivity {
     {
         penguinImage = findViewById(R.id.penguin);
         height = findViewById(R.id.gameScreen).getHeight();
-        if((penguinImage.getY() >= 0)&& !gameOver)
+        if(!gameOver)
         {
-            penguinImage.setY(penguinImage.getY() - penguinFlySpeed);
-            Log.d("Y Value Up ", penguinImage.getY() + " Height: "+ height);
+            Log.d("Y Value Up ", (penguinImage.getY()-penguinFlySpeed >= 10)+"");
+
+            if(penguinImage.getY()-penguinFlySpeed >= 10) {
+                penguinImage.setY(penguinImage.getY() - penguinFlySpeed);
+
+            }
+            else
+            {
+                //penguinImage.getY()-10;
+                gameOver = true;
+            }
         }
-        else
-        {
-            gameOver = true;
-        }
+
 
     }
 
