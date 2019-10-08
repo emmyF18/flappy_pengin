@@ -1,5 +1,8 @@
 package com.example.flappypenguin;
 
+import android.animation.Animator;
+import android.animation.ObjectAnimator;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -12,6 +15,8 @@ import android.widget.ImageButton;
 import android.widget.ImageSwitcher;
 import android.widget.ImageView;
 import android.widget.ViewSwitcher;
+
+=======
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -35,17 +40,23 @@ public class MainActivity extends AppCompatActivity {
     private int randomObstacle;
     private ImageSwitcher penguinSwitcher;
     private int height;
+    private ObjectAnimator scrollAnimator;
+    private boolean pause;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         listenForButton();
+
         countdownImageSwitcher = findViewById(R.id.countdown);
-        countdownImageSwitcher.setFactory(new ViewSwitcher.ViewFactory() {
+        countdownImageSwitcher.setFactory(new ViewSwitcher.ViewFactory()
+        {
             @Override
-            public View makeView() {
+            public View makeView()
+            {
                 countdownImage = new ImageView(MainActivity.this);
                 countdownImage.setImageResource(countdownImagesList[countdownImagesPosition]);
                 return countdownImage;
@@ -56,25 +67,33 @@ public class MainActivity extends AppCompatActivity {
         startCountdown();
 
         obstacleImage = findViewById(R.id.obstacles);
-        gameOver = false;
         displayObstaclesRandomly();
+
+        displayPauseScreen();
+
+        gameOver = false;
     }
 
     // SOURCE: https://www.tutlane.com/tutorial/android/android-imageswitcher-with-examples
     // SOURCE: https://abhiandroid.com/ui/countdown-timer
-    private void startCountdown() {
-        new CountDownTimer(4000, 1000) {
+    private void startCountdown()
+    {
+        new CountDownTimer(4000, 1000)
+        {
             @Override
-            public void onTick(long millisUntilFinished) {
+            public void onTick(long millisUntilFinished)
+            {
                 countdownImageSwitcher.setImageResource(countdownImagesList[countdownImagesPosition]);
 
-                if (countdownImagesPosition < countdownImagesList.length) {
+                if (countdownImagesPosition < countdownImagesList.length)
+                {
                     countdownImagesPosition++;
                 }
             }
 
             @Override
-            public void onFinish() {
+            public void onFinish()
+            {
                 countdownImageSwitcher.setImageResource(countdownImagesList[countdownImagesList.length - 1]);
                 movePenguinDown();
                 countdownImageSwitcher.setVisibility(View.INVISIBLE);
@@ -83,12 +102,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //click code from https://www.mkyong.com/android/android-imagebutton-example/
-    private void listenForButton() {
+    private void listenForButton()
+    {
         penguinImage = findViewById(R.id.penguin);
 
-        penguinImage.setOnClickListener(new OnClickListener() {
+        penguinImage.setOnClickListener(new OnClickListener()
+        {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view)
+            {
                 moveUp();
             }
         });
@@ -125,27 +147,47 @@ public class MainActivity extends AppCompatActivity {
         final Handler handler = new Handler();
         Runnable runnable = new Runnable()
         {
-            @Override
             public void run()
             {
-                makeObstaclesScroll();
                 obstacleImage.setImageResource(obstacleImagesList[randomObstacle]);
                 handler.postDelayed(this, 7000);
+                makeObstaclesScroll();
                 randomObstacle = random.nextInt(obstacleImagesList.length);
             }
         };
         handler.postDelayed(runnable, 7000);
     }
 
-    // SOURCE: https://stackoverflow.com/questions/11268033/delays-within-the-animation-translateanimation
+    // SOURCE: https://stackoverflow.com/questions/10621439/how-to-animate-scroll-position-how-to-scroll-smoothly
     private void makeObstaclesScroll()
     {
-        Animation animation = AnimationUtils.loadAnimation(this, R.anim.anim_img);
-        animation.setFillAfter(true);
-        animation.reset();
+        scrollAnimator = ObjectAnimator.ofInt(obstacleImage, "scrollX", -1500, 1500);
+        scrollAnimator.setDuration(7000);
 
-        obstacleImage.startAnimation(animation);
-    } // TODO: Fix lag
+        scrollAnimator.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animator) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animator) {
+
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animator) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animator) {
+
+            }
+        });
+
+        scrollAnimator.start();
+    }
 
     //timer code example: https://examples.javacodegeeks.com/android/core/activity/android-timertask-example/
     private void movePenguinDown()
@@ -183,5 +225,26 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
+    }
+
+    // SOURCE: https://stackoverflow.com/questions/26294781/display-image-after-button-click-in-android
+    private void displayPauseScreen()
+    {
+        ImageButton pauseButton = findViewById(R.id.pause_button);
+
+        pauseButton.setOnClickListener(new OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
+                {
+                    scrollAnimator.pause();
+                }
+
+                ImageView pauseMenu = findViewById(R.id.pause_menu);
+                pauseMenu.setVisibility(View.VISIBLE);
+            }
+        });
     }
 }
