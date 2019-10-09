@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.Animation;
@@ -16,9 +17,8 @@ import android.widget.ImageSwitcher;
 import android.widget.ImageView;
 import android.widget.ViewSwitcher;
 
-=======
-
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import java.util.Random;
 import java.util.Timer;
@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
     final private Integer[] penguinFlapLists = {R.drawable.penguin_sprite, R.drawable.snowman_obstacle};//TODO:change to flap penguin
     final Handler handler = new Handler();
     final float penguinFallSpeed = 3.2f;
-    final int penguinFlySpeed = 250;
+    final int penguinFlySpeed = 200;
     boolean gameOver = false;
     private ImageSwitcher countdownImageSwitcher;
     private ImageButton penguinImage;
@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        listenForButton();
+        listenForTouch();
 
         countdownImageSwitcher = findViewById(R.id.countdown);
         countdownImageSwitcher.setFactory(new ViewSwitcher.ViewFactory()
@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
         startCountdown();
 
         obstacleImage = findViewById(R.id.obstacles);
-        displayObstaclesRandomly();
+       displayObstaclesRandomly();
 
         displayPauseScreen();
 
@@ -102,19 +102,24 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //click code from https://www.mkyong.com/android/android-imagebutton-example/
-    private void listenForButton()
+    private void listenForTouch()
     {
         penguinImage = findViewById(R.id.penguin);
+        ConstraintLayout gameScreen = findViewById(R.id.gameScreen);
+        gameScreen.setOnTouchListener(handleTouch);
 
-        penguinImage.setOnClickListener(new OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
-            {
-                moveUp();
-            }
-        });
+
     }
+
+    private View.OnTouchListener handleTouch = new View.OnTouchListener() {
+        @Override
+        public boolean onTouch(View view, MotionEvent motionEvent) {
+            view.performClick();
+            Log.i("touch", "touched screen");
+            moveUp();
+            return false;
+        }
+    };
 
     private void moveUp()
     {
@@ -122,15 +127,15 @@ public class MainActivity extends AppCompatActivity {
         height = findViewById(R.id.gameScreen).getHeight();
         if(!gameOver)
         {
-            Log.d("Y Value Up ", (penguinImage.getY()-penguinFlySpeed >= 10)+"");
+            Log.d("Y Value Up ", (penguinImage.getY()-penguinFlySpeed)+"");
 
-            if(penguinImage.getY()-penguinFlySpeed >= 10) {
+            if(penguinImage.getY()-penguinFlySpeed >= 5) {
                 penguinImage.setY(penguinImage.getY() - penguinFlySpeed);
 
             }
             else
             {
-                //penguinImage.getY()-10;
+                penguinImage.setY(5);
                 gameOver = true;
             }
         }
