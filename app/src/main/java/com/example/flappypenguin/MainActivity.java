@@ -2,6 +2,7 @@ package com.example.flappypenguin;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -15,6 +16,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 import android.widget.ImageSwitcher;
 import android.widget.ImageView;
+import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -29,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     final private Integer[] obstacleImagesList = {R.drawable.ice_obstacle, R.drawable.ice_obstacle2, R.drawable.snowman_obstacle};
     final private Integer[] penguinFlapLists = {R.drawable.penguin_sprite, R.drawable.snowman_obstacle};//TODO:change to flap penguin
     final Handler handler = new Handler();
-    final float penguinFallSpeed = 3.2f;
+    final float penguinFallSpeed = 3.5f;
     final int penguinFlySpeed = 200;
     boolean gameOver = false;
     private ImageSwitcher countdownImageSwitcher;
@@ -115,7 +117,6 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
             view.performClick();
-            Log.i("touch", "touched screen");
             moveUp();
             return false;
         }
@@ -127,8 +128,6 @@ public class MainActivity extends AppCompatActivity {
         height = findViewById(R.id.gameScreen).getHeight();
         if(!gameOver)
         {
-            Log.d("Y Value Up ", (penguinImage.getY()-penguinFlySpeed)+"");
-
             if(penguinImage.getY()-penguinFlySpeed >= 5) {
                 penguinImage.setY(penguinImage.getY() - penguinFlySpeed);
 
@@ -136,6 +135,8 @@ public class MainActivity extends AppCompatActivity {
             else
             {
                 penguinImage.setY(5);
+                Toast.makeText(this, "Ouch! Game Over!", Toast.LENGTH_SHORT).show();
+                goToMenuScreen(findViewById(R.id.gameScreen));
                 gameOver = true;
             }
         }
@@ -215,13 +216,14 @@ public class MainActivity extends AppCompatActivity {
                     {
                         penguinImage = findViewById(R.id.penguin);
                         height = findViewById(R.id.gameScreen).getHeight();
-                        if((penguinImage.getY() < height-300) && !gameOver) //TODO: figure out why this is 300 off
+                        if((penguinImage.getY() < height-250) && !gameOver)
                         {
                            penguinImage.setY(penguinImage.getY()+penguinFallSpeed);
-                           //Log.d("Y Value Down ", penguinImage.getY() + " Height: "+ height);
                         }
                         else
                         {
+
+                            goToMenuScreen(findViewById(R.id.gameScreen));
                             gameOver = true;
                         }
 
@@ -252,4 +254,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+    private void goToMenuScreen(View view)
+    {
+        final Intent menu = new Intent(MainActivity.this, MenuActivity.class);
+        startActivity(menu);
+
+    }
+
 }
