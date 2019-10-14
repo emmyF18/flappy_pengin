@@ -135,9 +135,8 @@ public class MainActivity extends AppCompatActivity {
             else
             {
                 penguinImage.setY(5);
-                Toast.makeText(this, "Ouch! Game Over!", Toast.LENGTH_SHORT).show();
-                goToMenuScreen(findViewById(R.id.gameScreen));
                 gameOver = true;
+                goToMenuScreen();
             }
         }
 
@@ -222,8 +221,7 @@ public class MainActivity extends AppCompatActivity {
                         }
                         else
                         {
-
-                            goToMenuScreen(findViewById(R.id.gameScreen));
+                            goToMenuScreen();
                             gameOver = true;
                         }
 
@@ -254,11 +252,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-    private void goToMenuScreen(View view)
+    private void goToMenuScreen()
     {
-        final Intent menu = new Intent(MainActivity.this, MenuActivity.class);
-        startActivity(menu);
-
+        finish();
     }
 
 }
