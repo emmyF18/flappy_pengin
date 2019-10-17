@@ -54,3 +54,5 @@ Thumbs.db
 .idea/tasks.xml
 .idea/datasources.xml
 .idea/dataSources.ids
+
+.idea/codeStyles/

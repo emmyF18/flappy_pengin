@@ -2,7 +2,8 @@ package com.example.flappypenguin;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
-import android.content.Intent;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -11,12 +12,9 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 import android.widget.ImageSwitcher;
 import android.widget.ImageView;
-import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,13 +24,14 @@ import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity
+{
     final private Integer[] countdownImagesList = {R.drawable.countdown_3, R.drawable.countdown_2, R.drawable.countdown_1, R.drawable.countdown_start, R.drawable.blank};
     final private Integer[] obstacleImagesList = {R.drawable.ice_obstacle, R.drawable.ice_obstacle2, R.drawable.snowman_obstacle};
     final private Integer[] penguinFlapLists = {R.drawable.penguin_sprite, R.drawable.snowman_obstacle};//TODO:change to flap penguin
     final Handler handler = new Handler();
-    final float penguinFallSpeed = 3.5f;
-    final int penguinFlySpeed = 200;
+    final float penguinFallSpeed = 3.3f;
+    final int penguinFlySpeed = 250;
     boolean gameOver = false;
     private ImageSwitcher countdownImageSwitcher;
     private ImageButton penguinImage;
@@ -44,15 +43,21 @@ public class MainActivity extends AppCompatActivity {
     private int height;
     private ObjectAnimator scrollAnimator;
     private boolean pause;
-
+    private boolean canMoveUp = false;
+    /*
+    Todo:Play-test notes:
+        when the penguin gets to low on the screen it makes it hard to go back up
+        Falls a bit to fast (fixed?)
+        can move penguin during countdown (fixed)
+        obstacles are hard to get over ( especially the snowman)
+     */
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         listenForTouch();
-
         countdownImageSwitcher = findViewById(R.id.countdown);
         countdownImageSwitcher.setFactory(new ViewSwitcher.ViewFactory()
         {
@@ -67,12 +72,9 @@ public class MainActivity extends AppCompatActivity {
         countdownImageSwitcher.setInAnimation(this, android.R.anim.fade_in);
         countdownImageSwitcher.setOutAnimation(this, android.R.anim.fade_out);
         startCountdown();
-
         obstacleImage = findViewById(R.id.obstacles);
-       displayObstaclesRandomly();
-
+        displayObstaclesRandomly();
         displayPauseScreen();
-
         gameOver = false;
     }
 
@@ -97,25 +99,26 @@ public class MainActivity extends AppCompatActivity {
             public void onFinish()
             {
                 countdownImageSwitcher.setImageResource(countdownImagesList[countdownImagesList.length - 1]);
-                movePenguinDown();
+                canMoveUp = true;
+                createMoveDownTimer();
                 countdownImageSwitcher.setVisibility(View.INVISIBLE);
             }
         }.start();
     }
 
-    //click code from https://www.mkyong.com/android/android-imagebutton-example/
+    //touch stuff from https://developer.android.com/reference/android/view/View.OnTouchListener and https://stackoverflow.com/questions/11690504/how-to-use-view-ontouchlistener-instead-of-onclick
     private void listenForTouch()
     {
         penguinImage = findViewById(R.id.penguin);
         ConstraintLayout gameScreen = findViewById(R.id.gameScreen);
         gameScreen.setOnTouchListener(handleTouch);
-
-
     }
 
-    private View.OnTouchListener handleTouch = new View.OnTouchListener() {
+    private View.OnTouchListener handleTouch = new View.OnTouchListener()
+    {
         @Override
-        public boolean onTouch(View view, MotionEvent motionEvent) {
+        public boolean onTouch(View view, MotionEvent motionEvent)
+        {
             view.performClick();
             moveUp();
             return false;
@@ -126,21 +129,32 @@ public class MainActivity extends AppCompatActivity {
     {
         penguinImage = findViewById(R.id.penguin);
         height = findViewById(R.id.gameScreen).getHeight();
-        if(!gameOver)
+        if (!gameOver && canMoveUp)
         {
-            if(penguinImage.getY()-penguinFlySpeed >= 5) {
+            if (penguinImage.getY() - penguinFlySpeed >= 5)
+            {
                 penguinImage.setY(penguinImage.getY() - penguinFlySpeed);
-
-            }
-            else
+                Log.i("penguinY", penguinImage.getY() + "");
+            } else if (penguinImage.getY() < height - 20)
+            {
+                penguinImage.setY(penguinImage.getY() - penguinFlySpeed + 50);
+                Log.i("penguinY", penguinImage.getY() + "");
+            } else
             {
                 penguinImage.setY(5);
-                gameOver = true;
-                goToMenuScreen();
+                gameOver();
             }
         }
 
 
+    }
+
+    //alert code: https://www.geeksforgeeks.org/android-alert-dialog-box-and-how-to-create-it/
+    private void gameOver()
+    {
+        //todo:figure out why alert is causing lag
+        gameOver = true;
+        goToMenuScreen();
     }
 
     // SOURCE: https://stackoverflow.com/questions/21559405/how-to-display-image-automatically-after-a-random-time
@@ -169,24 +183,29 @@ public class MainActivity extends AppCompatActivity {
         scrollAnimator = ObjectAnimator.ofInt(obstacleImage, "scrollX", -1500, 1500);
         scrollAnimator.setDuration(7000);
 
-        scrollAnimator.addListener(new Animator.AnimatorListener() {
+        scrollAnimator.addListener(new Animator.AnimatorListener()
+        {
             @Override
-            public void onAnimationStart(Animator animator) {
+            public void onAnimationStart(Animator animator)
+            {
 
             }
 
             @Override
-            public void onAnimationEnd(Animator animator) {
+            public void onAnimationEnd(Animator animator)
+            {
 
             }
 
             @Override
-            public void onAnimationCancel(Animator animator) {
+            public void onAnimationCancel(Animator animator)
+            {
 
             }
 
             @Override
-            public void onAnimationRepeat(Animator animator) {
+            public void onAnimationRepeat(Animator animator)
+            {
 
             }
         });
@@ -195,17 +214,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //timer code example: https://examples.javacodegeeks.com/android/core/activity/android-timertask-example/
-    private void movePenguinDown()
+    private void createMoveDownTimer()
     {
-        TimerTask timerTask = createPenguinTimer();
+        TimerTask timerTask = movePenguinDown();
         Timer penguinDown = new Timer();
-        penguinDown.schedule(timerTask,0, 10);
+        penguinDown.schedule(timerTask, 0, 10);
     }
 
-    private TimerTask createPenguinTimer()
+    private TimerTask movePenguinDown()
     {
-         return new TimerTask()
-         {
+        return new TimerTask()
+        {
             @Override
             public void run()
             {
@@ -215,16 +234,13 @@ public class MainActivity extends AppCompatActivity {
                     {
                         penguinImage = findViewById(R.id.penguin);
                         height = findViewById(R.id.gameScreen).getHeight();
-                        if((penguinImage.getY() < height-250) && !gameOver)
+                        if ((penguinImage.getY() < height - 200) && !gameOver)
                         {
-                           penguinImage.setY(penguinImage.getY()+penguinFallSpeed);
-                        }
-                        else
+                            penguinImage.setY(penguinImage.getY() + penguinFallSpeed);
+                        } else
                         {
-                            goToMenuScreen();
-                            gameOver = true;
+                            gameOver();
                         }
-
                     }
                 });
             }
@@ -252,6 +268,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
     private void goToMenuScreen()
     {
         finish();
