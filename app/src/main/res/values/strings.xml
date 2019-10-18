@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Flappy Penguin</string>
+    <string name="penguin">Penguin</string>
+    <string name= "obstacles">obstacles </string>
+    <string name= "pause">Pause Menu </string>
+    <string name= "pauseButton">Pause Button </string>
 </resources>

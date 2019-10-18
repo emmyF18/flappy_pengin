@@ -33,6 +33,7 @@
     <ImageView
         android:id="@+id/obstacles"
         android:layout_width="match_parent"
+        android:contentDescription="@string/obstacles"
         android:layout_height="match_parent"
         android:scaleType="fitXY"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -40,12 +41,12 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0" />
 
-    <ImageButton
+    <ImageSwitcher
         android:id="@+id/penguin"
         android:layout_width="71dp"
         android:layout_height="85dp"
         android:background="@drawable/penguin_sprite"
-        android:contentDescription="@string/app_name"
+        android:contentDescription="@string/penguin"
         app:layout_constraintBottom_toBottomOf="@+id/gameBackground"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -55,6 +56,7 @@
 
     <ImageButton
         android:id="@+id/pause_button"
+        android:contentDescription="@string/pauseButton"
         android:layout_width="63dp"
         android:layout_height="63dp"
         android:layout_marginStart="48dp"
@@ -71,6 +73,7 @@
         android:id="@+id/pause_menu"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:contentDescription="@string/pause"
         android:scaleType="fitXY"
         android:background="#92000000"
         android:visibility="invisible"
@@ -81,5 +84,6 @@
         app:layout_constraintTop_toTopOf="@+id/gameBackground"
         app:layout_constraintVertical_bias="0.333"
         app:srcCompat="@drawable/pause_popup_background" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
