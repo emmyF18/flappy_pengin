@@ -73,9 +73,9 @@
         android:id="@+id/pause_menu"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="#92000000"
         android:contentDescription="@string/pause"
         android:scaleType="fitXY"
-        android:background="#92000000"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="@+id/gameBackground"
         app:layout_constraintEnd_toEndOf="@+id/gameBackground"
@@ -84,6 +84,38 @@
         app:layout_constraintTop_toTopOf="@+id/gameBackground"
         app:layout_constraintVertical_bias="0.333"
         app:srcCompat="@drawable/pause_popup_background" />
+
+    <ImageButton
+        android:id="@+id/exit_button"
+        android:layout_width="60dp"
+        android:layout_height="62dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="32dp"
+        android:background="#00FFFFFF"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/exit_button" />
+
+    <!--<ImageButton
+        android:id="@+id/exit"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="98dp"
+        android:background="#00FFFFFF"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.11"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/gameBackground"
+        app:layout_constraintVertical_bias="0.001"
+        app:srcCompat="@drawable/exit_button" />-->
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

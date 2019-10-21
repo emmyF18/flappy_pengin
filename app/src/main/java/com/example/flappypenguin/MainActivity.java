@@ -43,6 +43,10 @@ public class MainActivity extends AppCompatActivity
     private int height;
     private ObjectAnimator scrollAnimator;
     private boolean canMoveUp = false;
+    private ImageButton exitButton;
+    private ImageView pauseMenu;
+    private TimerTask timerTask;
+
     /*
     Todo:Play-test notes:
         when the penguin gets to low on the screen it makes it hard to go back up
@@ -58,6 +62,8 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
 
         listenForTouch();
+
+        displayPauseScreen();
 
         countdownImageSwitcher = findViewById(R.id.countdown);
         countdownImageSwitcher.setFactory(new ViewSwitcher.ViewFactory()
@@ -78,9 +84,7 @@ public class MainActivity extends AppCompatActivity
         obstacleImage = findViewById(R.id.obstacles);
         displayObstaclesRandomly();
 
-        displayPauseScreen();
-
-        gameOver = false;
+        // gameOver = false;
     }
 
     // SOURCE: https://www.tutlane.com/tutorial/android/android-imageswitcher-with-examples
@@ -103,9 +107,10 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onFinish()
             {
-                countdownImageSwitcher.setImageResource(countdownImagesList[countdownImagesList.length - 1]);
                 canMoveUp = true;
                 createMoveDownTimer();
+
+                countdownImageSwitcher.setImageResource(countdownImagesList[countdownImagesList.length - 1]);
                 countdownImageSwitcher.setVisibility(View.INVISIBLE);
             }
         }.start();
@@ -226,7 +231,7 @@ public class MainActivity extends AppCompatActivity
     //timer code example: https://examples.javacodegeeks.com/android/core/activity/android-timertask-example/
     private void createMoveDownTimer()
     {
-        TimerTask timerTask = movePenguinDown();
+        timerTask = movePenguinDown();
         Timer penguinDown = new Timer();
 
         penguinDown.schedule(timerTask, 0, 10);
@@ -270,13 +275,24 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View view)
             {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
-                {
-                    scrollAnimator.pause();
-                }
+                timerTask.cancel();
 
-                ImageView pauseMenu = findViewById(R.id.pause_menu);
+                pauseMenu = findViewById(R.id.pause_menu);
                 pauseMenu.setVisibility(View.VISIBLE);
+
+                exitButton = findViewById(R.id.exit_button);
+                exitButton.setVisibility(View.VISIBLE);
+                exitButton.setOnClickListener(new OnClickListener()
+                {
+                    @Override
+                    public void onClick(View view)
+                    {
+                        pauseMenu.setVisibility(View.INVISIBLE);
+                        exitButton.setVisibility(View.INVISIBLE);
+
+                        createMoveDownTimer();
+                    }
+                });
             }
         });
     }
