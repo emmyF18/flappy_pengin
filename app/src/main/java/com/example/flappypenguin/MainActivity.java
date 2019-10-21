@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity
     final int penguinFlySpeed = 250;
     boolean gameOver = false;
     private ImageSwitcher countdownImageSwitcher;
-    private ImageButton penguinImage;
+    // private ImageButton penguinImage;
     private ImageView countdownImage;
     private ImageView obstacleImage;
     private int countdownImagesPosition = 0;
@@ -42,7 +42,6 @@ public class MainActivity extends AppCompatActivity
     private ImageSwitcher penguinSwitcher;
     private int height;
     private ObjectAnimator scrollAnimator;
-    private boolean pause;
     private boolean canMoveUp = false;
     /*
     Todo:Play-test notes:
@@ -57,7 +56,9 @@ public class MainActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         listenForTouch();
+
         countdownImageSwitcher = findViewById(R.id.countdown);
         countdownImageSwitcher.setFactory(new ViewSwitcher.ViewFactory()
         {
@@ -69,12 +70,16 @@ public class MainActivity extends AppCompatActivity
                 return countdownImage;
             }
         });
+
         countdownImageSwitcher.setInAnimation(this, android.R.anim.fade_in);
         countdownImageSwitcher.setOutAnimation(this, android.R.anim.fade_out);
         startCountdown();
+
         obstacleImage = findViewById(R.id.obstacles);
         displayObstaclesRandomly();
+
         displayPauseScreen();
+
         gameOver = false;
     }
 
@@ -109,8 +114,9 @@ public class MainActivity extends AppCompatActivity
     //touch stuff from https://developer.android.com/reference/android/view/View.OnTouchListener and https://stackoverflow.com/questions/11690504/how-to-use-view-ontouchlistener-instead-of-onclick
     private void listenForTouch()
     {
-        penguinImage = findViewById(R.id.penguin);
+        penguinSwitcher = findViewById(R.id.penguin);
         ConstraintLayout gameScreen = findViewById(R.id.gameScreen);
+
         gameScreen.setOnTouchListener(handleTouch);
     }
 
@@ -121,32 +127,34 @@ public class MainActivity extends AppCompatActivity
         {
             view.performClick();
             moveUp();
+
             return false;
         }
     };
 
     private void moveUp()
     {
-        penguinImage = findViewById(R.id.penguin);
+        penguinSwitcher = findViewById(R.id.penguin);
         height = findViewById(R.id.gameScreen).getHeight();
+
         if (!gameOver && canMoveUp)
         {
-            if (penguinImage.getY() - penguinFlySpeed >= 5)
+            if (penguinSwitcher.getY() - penguinFlySpeed >= 5)
             {
-                penguinImage.setY(penguinImage.getY() - penguinFlySpeed);
-                Log.i("penguinY", penguinImage.getY() + "");
-            } else if (penguinImage.getY() < height - 20)
+                penguinSwitcher.setY(penguinSwitcher.getY() - penguinFlySpeed);
+                Log.i("penguinY", penguinSwitcher.getY() + "");
+            }
+            else if (penguinSwitcher.getY() < height - 20)
             {
-                penguinImage.setY(penguinImage.getY() - penguinFlySpeed + 50);
-                Log.i("penguinY", penguinImage.getY() + "");
-            } else
+                penguinSwitcher.setY(penguinSwitcher.getY() - penguinFlySpeed + 50);
+                Log.i("penguinY", penguinSwitcher.getY() + "");
+            }
+            else
             {
-                penguinImage.setY(5);
+                penguinSwitcher.setY(5);
                 gameOver();
             }
         }
-
-
     }
 
     //alert code: https://www.geeksforgeeks.org/android-alert-dialog-box-and-how-to-create-it/
@@ -154,6 +162,7 @@ public class MainActivity extends AppCompatActivity
     {
         //todo:figure out why alert is causing lag
         gameOver = true;
+
         goToMenuScreen();
     }
 
@@ -174,6 +183,7 @@ public class MainActivity extends AppCompatActivity
                 randomObstacle = random.nextInt(obstacleImagesList.length);
             }
         };
+
         handler.postDelayed(runnable, 7000);
     }
 
@@ -218,6 +228,7 @@ public class MainActivity extends AppCompatActivity
     {
         TimerTask timerTask = movePenguinDown();
         Timer penguinDown = new Timer();
+
         penguinDown.schedule(timerTask, 0, 10);
     }
 
@@ -232,12 +243,14 @@ public class MainActivity extends AppCompatActivity
                 {
                     public void run()
                     {
-                        penguinImage = findViewById(R.id.penguin);
+                        penguinSwitcher = findViewById(R.id.penguin);
                         height = findViewById(R.id.gameScreen).getHeight();
-                        if ((penguinImage.getY() < height - 200) && !gameOver)
+
+                        if ((penguinSwitcher.getY() < height - 200) && !gameOver)
                         {
-                            penguinImage.setY(penguinImage.getY() + penguinFallSpeed);
-                        } else
+                            penguinSwitcher.setY(penguinSwitcher.getY() + penguinFallSpeed);
+                        }
+                        else
                         {
                             gameOver();
                         }
@@ -245,7 +258,6 @@ public class MainActivity extends AppCompatActivity
                 });
             }
         };
-
     }
 
     // SOURCE: https://stackoverflow.com/questions/26294781/display-image-after-button-click-in-android
@@ -273,5 +285,4 @@ public class MainActivity extends AppCompatActivity
     {
         finish();
     }
-
 }
