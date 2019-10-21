@@ -2,8 +2,6 @@ package com.example.flappypenguin;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -31,7 +29,7 @@ public class MainActivity extends AppCompatActivity
     final private Integer[] penguinFlapLists = {R.drawable.penguin_sprite, R.drawable.snowman_obstacle};//TODO:change to flap penguin
     final Handler handler = new Handler();
     final float penguinFallSpeed = 3.3f;
-    final int penguinFlySpeed = 250;
+    final int penguinFlySpeed = 235;
     boolean gameOver = false;
     private ImageSwitcher countdownImageSwitcher;
     // private ImageButton penguinImage;
@@ -84,7 +82,25 @@ public class MainActivity extends AppCompatActivity
         obstacleImage = findViewById(R.id.obstacles);
         displayObstaclesRandomly();
 
-        // gameOver = false;
+        displayPauseScreen();
+
+        gameOver = false;
+
+        penguinSwitcher =  findViewById(R.id.penguin);
+        penguinSwitcher.setFactory(new ViewSwitcher.ViewFactory()
+        {
+            @Override
+            public View makeView()
+            {
+                ImageView imgVw = new ImageView(MainActivity.this);
+
+                imgVw.setImageResource(R.drawable.penguin_sprite);
+                return imgVw;
+            }
+        });
+        penguinSwitcher.setInAnimation(this, android.R.anim.fade_in);
+        penguinSwitcher.setOutAnimation(this, android.R.anim.fade_out);
+
     }
 
     // SOURCE: https://www.tutlane.com/tutorial/android/android-imageswitcher-with-examples
@@ -146,17 +162,13 @@ public class MainActivity extends AppCompatActivity
         {
             if (penguinSwitcher.getY() - penguinFlySpeed >= 5)
             {
-                penguinSwitcher.setY(penguinSwitcher.getY() - penguinFlySpeed);
-                Log.i("penguinY", penguinSwitcher.getY() + "");
-            }
-            else if (penguinSwitcher.getY() < height - 20)
-            {
-                penguinSwitcher.setY(penguinSwitcher.getY() - penguinFlySpeed + 50);
-                Log.i("penguinY", penguinSwitcher.getY() + "");
+                penguinImage.setY(penguinImage.getY() - penguinFlySpeed);
+                Log.i("penguinY", penguinImage.getY() + "");
+                penguinSwitcher.setImageResource(R.drawable.countdown_1);
             }
             else
             {
-                penguinSwitcher.setY(5);
+                penguinImage.setY(5);
                 gameOver();
             }
         }
@@ -167,7 +179,7 @@ public class MainActivity extends AppCompatActivity
     {
         //todo:figure out why alert is causing lag
         gameOver = true;
-
+        penguinSwitcher.setImageResource(R.drawable.penguin_sprite);
         goToMenuScreen();
     }
 
@@ -253,9 +265,10 @@ public class MainActivity extends AppCompatActivity
 
                         if ((penguinSwitcher.getY() < height - 200) && !gameOver)
                         {
-                            penguinSwitcher.setY(penguinSwitcher.getY() + penguinFallSpeed);
-                        }
-                        else
+                            penguinImage.setY(penguinImage.getY() + penguinFallSpeed);
+                            penguinSwitcher.setImageResource(R.drawable.penguin_sprite);
+
+                        } else
                         {
                             gameOver();
                         }
