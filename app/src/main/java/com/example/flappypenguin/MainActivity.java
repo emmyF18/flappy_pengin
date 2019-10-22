@@ -3,7 +3,9 @@ package com.example.flappypenguin;
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -19,6 +21,7 @@ import android.widget.ViewSwitcher;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 
 import java.util.Random;
 import java.util.Timer;
@@ -34,6 +37,7 @@ public class MainActivity extends AppCompatActivity
     final int penguinFlySpeed = 250;
     boolean gameOver = false;
     private ImageSwitcher countdownImageSwitcher;
+    // private ImageSwitcher obstacleImageSwitcher;
     // private ImageButton penguinImage;
     private ImageView countdownImage;
     private ImageView obstacleImage;
@@ -46,6 +50,7 @@ public class MainActivity extends AppCompatActivity
     private ImageButton exitButton;
     private ImageView pauseMenu;
     private TimerTask timerTask;
+    private boolean isPaused = false;
 
     /*
     Todo:Play-test notes:
@@ -82,6 +87,13 @@ public class MainActivity extends AppCompatActivity
         startCountdown();
 
         obstacleImage = findViewById(R.id.obstacles);
+        /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
+        {
+            if (!scrollAnimator.isPaused())
+            {
+                displayObstaclesRandomly();
+            }
+        }*/
         displayObstaclesRandomly();
 
         // gameOver = false;
@@ -176,20 +188,27 @@ public class MainActivity extends AppCompatActivity
     {
         final Random random = new Random();
         randomObstacle = random.nextInt(obstacleImagesList.length);
+        obstacleImage = findViewById(R.id.obstacles);
 
-        final Handler handler = new Handler();
-        Runnable runnable = new Runnable()
+        final Runnable runnable = new Runnable()
         {
+            @Override
             public void run()
             {
-                obstacleImage.setImageResource(obstacleImagesList[randomObstacle]);
-                handler.postDelayed(this, 7000);
-                makeObstaclesScroll();
-                randomObstacle = random.nextInt(obstacleImagesList.length);
+                if (isPaused)
+                {
+                    obstacleImage.removeCallbacks(this);
+                }
+                else
+                {
+                    obstacleImage.setImageResource(obstacleImagesList[randomObstacle]);
+                    obstacleImage.postDelayed(this, 7000);
+                    makeObstaclesScroll();
+                    randomObstacle = random.nextInt(obstacleImagesList.length);
+                }
             }
         };
-
-        handler.postDelayed(runnable, 7000);
+        obstacleImage.postDelayed(runnable, 7000);
     }
 
     // SOURCE: https://stackoverflow.com/questions/10621439/how-to-animate-scroll-position-how-to-scroll-smoothly
@@ -277,6 +296,12 @@ public class MainActivity extends AppCompatActivity
             {
                 timerTask.cancel();
 
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
+                {
+                    scrollAnimator.pause();
+                    isPaused = true;
+                }
+
                 pauseMenu = findViewById(R.id.pause_menu);
                 pauseMenu.setVisibility(View.VISIBLE);
 
@@ -291,6 +316,13 @@ public class MainActivity extends AppCompatActivity
                         exitButton.setVisibility(View.INVISIBLE);
 
                         createMoveDownTimer();
+
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
+                        {
+                            scrollAnimator.resume();
+                            isPaused = false;
+                            displayObstaclesRandomly();
+                        }
                     }
                 });
             }
