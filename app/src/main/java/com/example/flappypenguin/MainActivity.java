@@ -83,13 +83,7 @@ public class MainActivity extends AppCompatActivity
         startCountdown();
 
         obstacleImage = findViewById(R.id.obstacles);
-        /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
-        {
-            if (!scrollAnimator.isPaused())
-            {
-                displayObstaclesRandomly();
-            }
-        }*/
+
         displayObstaclesRandomly();
 
         // gameOver = false;
