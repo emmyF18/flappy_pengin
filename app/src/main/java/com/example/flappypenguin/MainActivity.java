@@ -2,10 +2,6 @@ package com.example.flappypenguin;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -21,7 +17,6 @@ import android.widget.ViewSwitcher;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.content.ContextCompat;
 
 import java.util.Random;
 import java.util.Timer;
@@ -31,19 +26,17 @@ public class MainActivity extends AppCompatActivity
 {
     final private Integer[] countdownImagesList = {R.drawable.countdown_3, R.drawable.countdown_2, R.drawable.countdown_1, R.drawable.countdown_start, R.drawable.blank};
     final private Integer[] obstacleImagesList = {R.drawable.ice_obstacle, R.drawable.ice_obstacle2, R.drawable.snowman_obstacle};
-    final private Integer[] penguinFlapLists = {R.drawable.penguin_sprite, R.drawable.snowman_obstacle};//TODO:change to flap penguin
+    final private Integer[] penguinFlapLists = {R.drawable.penguin_sprite, R.drawable.penguin_falling};
     final Handler handler = new Handler();
     final float penguinFallSpeed = 3.3f;
     final int penguinFlySpeed = 235;
     boolean gameOver = false;
     private ImageSwitcher countdownImageSwitcher;
-    // private ImageSwitcher obstacleImageSwitcher;
-    // private ImageButton penguinImage;
     private ImageView countdownImage;
     private ImageView obstacleImage;
     private int countdownImagesPosition = 0;
     private int randomObstacle;
-    private ImageSwitcher penguinSwitcher;
+    private ImageSwitcher penguin;
     private int height;
     private ObjectAnimator scrollAnimator;
     private boolean canMoveUp = false;
@@ -54,7 +47,7 @@ public class MainActivity extends AppCompatActivity
 
     /*
     Todo:Play-test notes:
-        when the penguin gets to low on the screen it makes it hard to go back up
+        when the penguin gets to low on the screen it makes it hard to go back up (fixed)
         Falls a bit to fast (fixed?)
         can move penguin during countdown (fixed)
         obstacles are hard to get over ( especially the snowman)
@@ -65,11 +58,8 @@ public class MainActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         listenForTouch();
-
         displayPauseScreen();
-
         countdownImageSwitcher = findViewById(R.id.countdown);
         countdownImageSwitcher.setFactory(new ViewSwitcher.ViewFactory()
         {
@@ -81,27 +71,15 @@ public class MainActivity extends AppCompatActivity
                 return countdownImage;
             }
         });
-
         countdownImageSwitcher.setInAnimation(this, android.R.anim.fade_in);
         countdownImageSwitcher.setOutAnimation(this, android.R.anim.fade_out);
         startCountdown();
-
         obstacleImage = findViewById(R.id.obstacles);
-        /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
-        {
-            if (!scrollAnimator.isPaused())
-            {
-                displayObstaclesRandomly();
-            }
-        }*/
         displayObstaclesRandomly();
-
         displayPauseScreen();
-
         gameOver = false;
-
-        penguinSwitcher =  findViewById(R.id.penguin);
-        penguinSwitcher.setFactory(new ViewSwitcher.ViewFactory()
+        penguin =  findViewById(R.id.penguin);
+        penguin.setFactory(new ViewSwitcher.ViewFactory()
         {
             @Override
             public View makeView()
@@ -112,8 +90,8 @@ public class MainActivity extends AppCompatActivity
                 return imgVw;
             }
         });
-        penguinSwitcher.setInAnimation(this, android.R.anim.fade_in);
-        penguinSwitcher.setOutAnimation(this, android.R.anim.fade_out);
+        penguin.setInAnimation(this, android.R.anim.fade_in);
+        penguin.setOutAnimation(this, android.R.anim.fade_out);
 
     }
 
@@ -149,7 +127,7 @@ public class MainActivity extends AppCompatActivity
     //touch stuff from https://developer.android.com/reference/android/view/View.OnTouchListener and https://stackoverflow.com/questions/11690504/how-to-use-view-ontouchlistener-instead-of-onclick
     private void listenForTouch()
     {
-        penguinSwitcher = findViewById(R.id.penguin);
+        penguin = findViewById(R.id.penguin);
         ConstraintLayout gameScreen = findViewById(R.id.gameScreen);
 
         gameScreen.setOnTouchListener(handleTouch);
@@ -169,20 +147,20 @@ public class MainActivity extends AppCompatActivity
 
     private void moveUp()
     {
-        penguinSwitcher = findViewById(R.id.penguin);
+        penguin = findViewById(R.id.penguin);
         height = findViewById(R.id.gameScreen).getHeight();
 
         if (!gameOver && canMoveUp)
         {
-            if (penguinSwitcher.getY() - penguinFlySpeed >= 5)
+            if (penguin.getY() - penguinFlySpeed >= 5)
             {
-                penguinImage.setY(penguinImage.getY() - penguinFlySpeed);
-                Log.i("penguinY", penguinImage.getY() + "");
-                penguinSwitcher.setImageResource(R.drawable.countdown_1);
+                penguin.setY(penguin.getY() - penguinFlySpeed);
+                Log.i("penguinY", penguin.getY() + "");
+                penguin.setImageResource(R.drawable.countdown_1);
             }
             else
             {
-                penguinImage.setY(5);
+                penguin.setY(5);
                 gameOver();
             }
         }
@@ -193,7 +171,7 @@ public class MainActivity extends AppCompatActivity
     {
         //todo:figure out why alert is causing lag
         gameOver = true;
-        penguinSwitcher.setImageResource(R.drawable.penguin_sprite);
+        penguin.setImageResource(R.drawable.penguin_sprite);
         goToMenuScreen();
     }
 
@@ -281,13 +259,13 @@ public class MainActivity extends AppCompatActivity
                 {
                     public void run()
                     {
-                        penguinSwitcher = findViewById(R.id.penguin);
+                        penguin = findViewById(R.id.penguin);
                         height = findViewById(R.id.gameScreen).getHeight();
 
-                        if ((penguinSwitcher.getY() < height - 200) && !gameOver)
+                        if ((penguin.getY() < height - 200) && !gameOver)
                         {
-                            penguinImage.setY(penguinImage.getY() + penguinFallSpeed);
-                            penguinSwitcher.setImageResource(R.drawable.penguin_sprite);
+                            penguin.setY(penguin.getY() + penguinFallSpeed);
+                            penguin.setImageResource(R.drawable.penguin_sprite);
 
                         } else
                         {
