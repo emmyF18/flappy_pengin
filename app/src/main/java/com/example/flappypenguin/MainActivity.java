@@ -17,6 +17,7 @@ import android.widget.ViewSwitcher;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 
 import java.util.Random;
 import java.util.Timer;
@@ -32,6 +33,8 @@ public class MainActivity extends AppCompatActivity
     final int penguinFlySpeed = 250;
     boolean gameOver = false;
     private ImageSwitcher countdownImageSwitcher;
+    // private ImageSwitcher obstacleImageSwitcher;
+    // private ImageButton penguinImage;
     private ImageView countdownImage;
     private ImageView obstacleImage;
     private int countdownImagesPosition = 0;
@@ -80,6 +83,13 @@ public class MainActivity extends AppCompatActivity
         startCountdown();
 
         obstacleImage = findViewById(R.id.obstacles);
+        /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
+        {
+            if (!scrollAnimator.isPaused())
+            {
+                displayObstaclesRandomly();
+            }
+        }*/
         displayObstaclesRandomly();
 
         // gameOver = false;
