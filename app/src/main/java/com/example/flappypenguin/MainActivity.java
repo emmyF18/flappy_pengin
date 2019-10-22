@@ -92,7 +92,6 @@ public class MainActivity extends AppCompatActivity
         });
         penguin.setInAnimation(this, android.R.anim.fade_in);
         penguin.setOutAnimation(this, android.R.anim.fade_out);
-
     }
 
     // SOURCE: https://www.tutlane.com/tutorial/android/android-imageswitcher-with-examples
