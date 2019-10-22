@@ -29,10 +29,9 @@ public class MainActivity extends AppCompatActivity
     final private Integer[] penguinFlapLists = {R.drawable.penguin_sprite, R.drawable.snowman_obstacle};//TODO:change to flap penguin
     final Handler handler = new Handler();
     final float penguinFallSpeed = 3.3f;
-    final int penguinFlySpeed = 235;
+    final int penguinFlySpeed = 250;
     boolean gameOver = false;
     private ImageSwitcher countdownImageSwitcher;
-    // private ImageButton penguinImage;
     private ImageView countdownImage;
     private ImageView obstacleImage;
     private int countdownImagesPosition = 0;
@@ -44,6 +43,7 @@ public class MainActivity extends AppCompatActivity
     private ImageButton exitButton;
     private ImageView pauseMenu;
     private TimerTask timerTask;
+    private boolean isPaused = false;
 
     /*
     Todo:Play-test notes:
@@ -82,25 +82,7 @@ public class MainActivity extends AppCompatActivity
         obstacleImage = findViewById(R.id.obstacles);
         displayObstaclesRandomly();
 
-        displayPauseScreen();
-
-        gameOver = false;
-
-        penguinSwitcher =  findViewById(R.id.penguin);
-        penguinSwitcher.setFactory(new ViewSwitcher.ViewFactory()
-        {
-            @Override
-            public View makeView()
-            {
-                ImageView imgVw = new ImageView(MainActivity.this);
-
-                imgVw.setImageResource(R.drawable.penguin_sprite);
-                return imgVw;
-            }
-        });
-        penguinSwitcher.setInAnimation(this, android.R.anim.fade_in);
-        penguinSwitcher.setOutAnimation(this, android.R.anim.fade_out);
-
+        // gameOver = false;
     }
 
     // SOURCE: https://www.tutlane.com/tutorial/android/android-imageswitcher-with-examples
@@ -162,13 +144,17 @@ public class MainActivity extends AppCompatActivity
         {
             if (penguinSwitcher.getY() - penguinFlySpeed >= 5)
             {
-                penguinImage.setY(penguinImage.getY() - penguinFlySpeed);
-                Log.i("penguinY", penguinImage.getY() + "");
-                penguinSwitcher.setImageResource(R.drawable.countdown_1);
+                penguinSwitcher.setY(penguinSwitcher.getY() - penguinFlySpeed);
+                Log.i("penguinY", penguinSwitcher.getY() + "");
+            }
+            else if (penguinSwitcher.getY() < height - 20)
+            {
+                penguinSwitcher.setY(penguinSwitcher.getY() - penguinFlySpeed + 50);
+                Log.i("penguinY", penguinSwitcher.getY() + "");
             }
             else
             {
-                penguinImage.setY(5);
+                penguinSwitcher.setY(5);
                 gameOver();
             }
         }
@@ -179,7 +165,7 @@ public class MainActivity extends AppCompatActivity
     {
         //todo:figure out why alert is causing lag
         gameOver = true;
-        penguinSwitcher.setImageResource(R.drawable.penguin_sprite);
+
         goToMenuScreen();
     }
 
@@ -188,20 +174,27 @@ public class MainActivity extends AppCompatActivity
     {
         final Random random = new Random();
         randomObstacle = random.nextInt(obstacleImagesList.length);
+        obstacleImage = findViewById(R.id.obstacles);
 
-        final Handler handler = new Handler();
-        Runnable runnable = new Runnable()
+        final Runnable runnable = new Runnable()
         {
+            @Override
             public void run()
             {
-                obstacleImage.setImageResource(obstacleImagesList[randomObstacle]);
-                handler.postDelayed(this, 7000);
-                makeObstaclesScroll();
-                randomObstacle = random.nextInt(obstacleImagesList.length);
+                if (isPaused)
+                {
+                    obstacleImage.removeCallbacks(this);
+                }
+                else
+                {
+                    obstacleImage.setImageResource(obstacleImagesList[randomObstacle]);
+                    obstacleImage.postDelayed(this, 7000);
+                    makeObstaclesScroll();
+                    randomObstacle = random.nextInt(obstacleImagesList.length);
+                }
             }
         };
-
-        handler.postDelayed(runnable, 7000);
+        obstacleImage.postDelayed(runnable, 7000);
     }
 
     // SOURCE: https://stackoverflow.com/questions/10621439/how-to-animate-scroll-position-how-to-scroll-smoothly
@@ -265,10 +258,9 @@ public class MainActivity extends AppCompatActivity
 
                         if ((penguinSwitcher.getY() < height - 200) && !gameOver)
                         {
-                            penguinImage.setY(penguinImage.getY() + penguinFallSpeed);
-                            penguinSwitcher.setImageResource(R.drawable.penguin_sprite);
-
-                        } else
+                            penguinSwitcher.setY(penguinSwitcher.getY() + penguinFallSpeed);
+                        }
+                        else
                         {
                             gameOver();
                         }
@@ -290,6 +282,12 @@ public class MainActivity extends AppCompatActivity
             {
                 timerTask.cancel();
 
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
+                {
+                    scrollAnimator.pause();
+                    isPaused = true;
+                }
+
                 pauseMenu = findViewById(R.id.pause_menu);
                 pauseMenu.setVisibility(View.VISIBLE);
 
@@ -304,6 +302,13 @@ public class MainActivity extends AppCompatActivity
                         exitButton.setVisibility(View.INVISIBLE);
 
                         createMoveDownTimer();
+
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
+                        {
+                            scrollAnimator.resume();
+                            isPaused = false;
+                            displayObstaclesRandomly();
+                        }
                     }
                 });
             }

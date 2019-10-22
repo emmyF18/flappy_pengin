@@ -41,6 +41,17 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0" />
 
+    <!--<ImageSwitcher
+        android:id="@+id/obstacles"
+        android:layout_width="match_parent"
+        android:contentDescription="@string/obstacles"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />-->
+
     <ImageSwitcher
         android:id="@+id/penguin"
         android:layout_width="71dp"
