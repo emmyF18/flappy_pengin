@@ -175,6 +175,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     // SOURCE: https://stackoverflow.com/questions/21559405/how-to-display-image-automatically-after-a-random-time
+    // SOURCE: https://stackoverflow.com/questions/23357124/android-how-to-pause-and-resume-runnable-thread
     private void displayObstaclesRandomly()
     {
         final Random random = new Random();
