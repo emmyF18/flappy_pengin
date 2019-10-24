@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity
 {
     final private Integer[] countdownImagesList = {R.drawable.countdown_3, R.drawable.countdown_2, R.drawable.countdown_1, R.drawable.countdown_start, R.drawable.blank};
     final private Integer[] obstacleImagesList = {R.drawable.ice_obstacle, R.drawable.ice_obstacle2, R.drawable.snowman_obstacle};
-    final private Integer[] penguinFlapLists = {R.drawable.penguin_sprite, R.drawable.penguin_falling};
+    final private Integer[] penguinFlapList = {R.drawable.penguin_sprite, R.drawable.penguin_falling};
     final Handler handler = new Handler();
     final float penguinFallSpeed = 3.3f;
     final int penguinFlySpeed = 235;
@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity
     private ImageView pauseMenu;
     private TimerTask timerTask;
     private boolean isPaused = false;
+    private int penguinFalling = 0;
 
     /*
     Todo:Play-test notes:
@@ -86,7 +87,7 @@ public class MainActivity extends AppCompatActivity
             {
                 ImageView imgVw = new ImageView(MainActivity.this);
 
-                imgVw.setImageResource(R.drawable.penguin_sprite);
+                imgVw.setImageResource(penguinFlapList[penguinFalling]);
                 return imgVw;
             }
         });
@@ -155,7 +156,8 @@ public class MainActivity extends AppCompatActivity
             {
                 penguin.setY(penguin.getY() - penguinFlySpeed);
                 Log.i("penguinY", penguin.getY() + "");
-                penguin.setImageResource(R.drawable.countdown_1);
+                penguinFalling = 0;
+                penguin.setImageResource(penguinFlapList[penguinFalling]);
             }
             else
             {
@@ -265,7 +267,9 @@ public class MainActivity extends AppCompatActivity
                         if ((penguin.getY() < height - 200) && !gameOver)
                         {
                             penguin.setY(penguin.getY() + penguinFallSpeed);
-                            penguin.setImageResource(R.drawable.penguin_sprite);
+                            penguinFalling = 1;
+                            penguin.setImageResource(penguinFlapList[penguinFalling]);
+
 
                         } else
                         {
