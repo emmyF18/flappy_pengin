@@ -8,16 +8,16 @@
     tools:context=".MainActivity">
 
     <ImageView
-        android:id="@+id/gameBackground"
-        android:layout_width="503dp"
-        android:layout_height="840dp"
+        android:id="@+id/game_background"
+        android:layout_width="570dp"
+        android:layout_height="964dp"
         android:contentDescription="@string/app_name"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.358"
+        app:layout_constraintHorizontal_bias="0.185"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.504"
+        app:layout_constraintVertical_bias="0.574"
         app:srcCompat="@drawable/game_background" />
 
     <ImageSwitcher
@@ -28,7 +28,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.096" />
+        app:layout_constraintVertical_bias="0.096">
+
+    </ImageSwitcher>
 
     <ImageView
         android:id="@+id/obstacles"
@@ -41,43 +43,34 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0" />
 
-    <!--<ImageSwitcher
-        android:id="@+id/obstacles"
-        android:layout_width="match_parent"
-        android:contentDescription="@string/obstacles"
-        android:layout_height="match_parent"
-        android:scaleType="fitXY"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />-->
-
     <ImageSwitcher
         android:id="@+id/penguin"
         android:layout_width="71dp"
         android:layout_height="85dp"
         android:background="@drawable/penguin_sprite"
         android:contentDescription="@string/penguin"
-        app:layout_constraintBottom_toBottomOf="@+id/gameBackground"
+        app:layout_constraintBottom_toBottomOf="@+id/game_background"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/countdown"
         app:layout_constraintVertical_bias="0.302"
-        app:srcCompat="@android:color/transparent" />
+        app:srcCompat="@android:color/transparent" >
+
+    </ImageSwitcher>
 
     <ImageButton
         android:id="@+id/pause_button"
-        android:contentDescription="@string/pauseButton"
         android:layout_width="63dp"
         android:layout_height="63dp"
-        android:layout_marginStart="48dp"
-        android:layout_marginLeft="48dp"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="184dp"
         android:layout_weight="1"
         android:background="#00FFFFFF"
-        android:scaleType="fitStart"
-        app:layout_constraintStart_toStartOf="@+id/gameBackground"
-        app:layout_constraintTop_toTopOf="@+id/gameBackground"
+        android:contentDescription="@string/pauseButton"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.043"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/game_background"
         app:srcCompat="@drawable/pause_button" />
 
     <ImageView
@@ -88,45 +81,79 @@
         android:contentDescription="@string/pause"
         android:scaleType="fitXY"
         android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="@+id/gameBackground"
-        app:layout_constraintEnd_toEndOf="@+id/gameBackground"
+        app:layout_constraintBottom_toBottomOf="@+id/game_background"
+        app:layout_constraintEnd_toEndOf="@+id/game_background"
         app:layout_constraintHorizontal_bias="0.341"
-        app:layout_constraintStart_toStartOf="@+id/gameBackground"
-        app:layout_constraintTop_toTopOf="@+id/gameBackground"
+        app:layout_constraintStart_toStartOf="@+id/game_background"
+        app:layout_constraintTop_toTopOf="@+id/game_background"
         app:layout_constraintVertical_bias="0.333"
         app:srcCompat="@drawable/pause_popup_background" />
 
+    <ImageView
+        android:id="@+id/pause_logo"
+        android:layout_width="268dp"
+        android:layout_height="108dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/pause_menu"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/pause_menu"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.120000005"
+        app:srcCompat="@drawable/pause_logo" />
+
     <ImageButton
-        android:id="@+id/exit_button"
-        android:layout_width="60dp"
-        android:layout_height="62dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginLeft="40dp"
-        android:layout_marginTop="32dp"
+        android:id="@+id/restart_button"
+        android:layout_width="103dp"
+        android:layout_height="96dp"
         android:background="#00FFFFFF"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.129"
+        app:layout_constraintStart_toStartOf="@+id/pause_menu"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.39"
+        app:srcCompat="@drawable/restart_button" />
+
+    <ImageButton
+        android:id="@+id/home_button"
+        android:layout_width="103dp"
+        android:layout_height="95dp"
+        android:background="#00FFFFFF"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@drawable/exit_button" />
+        app:layout_constraintVertical_bias="0.6"
+        app:srcCompat="@drawable/menu_button" />
 
-    <!--<ImageButton
-        android:id="@+id/exit"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="98dp"
+    <ImageButton
+        android:id="@+id/scores_button"
+        android:layout_width="101dp"
+        android:layout_height="104dp"
         android:background="#00FFFFFF"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.11"
+        app:layout_constraintHorizontal_bias="0.85"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/gameBackground"
-        app:layout_constraintVertical_bias="0.001"
-        app:srcCompat="@drawable/exit_button" />-->
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.39"
+        app:srcCompat="@drawable/scores_button" />
 
+    <ImageButton
+        android:id="@+id/resume_button"
+        android:layout_width="273dp"
+        android:layout_height="109dp"
+        android:background="#00FFFFFF"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/pause_menu"
+        app:layout_constraintEnd_toEndOf="@+id/pause_menu"
+        app:layout_constraintHorizontal_bias="0.503"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.87"
+        app:srcCompat="@drawable/resume_button" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

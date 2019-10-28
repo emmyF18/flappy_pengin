@@ -40,11 +40,15 @@ public class MainActivity extends AppCompatActivity
     private int height;
     private ObjectAnimator scrollAnimator;
     private boolean canMoveUp = false;
-    private ImageButton exitButton;
+    private ImageButton resumeButton;
     private ImageView pauseMenu;
     private TimerTask timerTask;
     private boolean isPaused = false;
     private int penguinFalling = 0;
+    private ImageView pauseLogo;
+    private ImageButton menuButton;
+    private ImageButton restartButton;
+    private ImageButton scoresButton;
 
     /*
     Todo:Play-test notes:
@@ -75,9 +79,9 @@ public class MainActivity extends AppCompatActivity
         countdownImageSwitcher.setInAnimation(this, android.R.anim.fade_in);
         countdownImageSwitcher.setOutAnimation(this, android.R.anim.fade_out);
         startCountdown();
-        obstacleImage = findViewById(R.id.obstacles);
+
         displayObstaclesRandomly();
-        displayPauseScreen();
+
         gameOver = false;
         penguin =  findViewById(R.id.penguin);
         penguin.setFactory(new ViewSwitcher.ViewFactory()
@@ -91,8 +95,8 @@ public class MainActivity extends AppCompatActivity
                 return imgVw;
             }
         });
-        penguin.setInAnimation(this, android.R.anim.fade_in);
-        penguin.setOutAnimation(this, android.R.anim.fade_out);
+        // penguin.setInAnimation(this, android.R.anim.fade_in);
+        // penguin.setOutAnimation(this, android.R.anim.fade_out);
     }
 
     // SOURCE: https://www.tutlane.com/tutorial/android/android-imageswitcher-with-examples
@@ -196,20 +200,28 @@ public class MainActivity extends AppCompatActivity
                 else
                 {
                     obstacleImage.setImageResource(obstacleImagesList[randomObstacle]);
-                    obstacleImage.postDelayed(this, 7000);
-                    makeObstaclesScroll();
+                    obstacleImage.postDelayed(this, 8500);
                     randomObstacle = random.nextInt(obstacleImagesList.length);
+                    makeObstaclesScroll();
                 }
             }
         };
-        obstacleImage.postDelayed(runnable, 7000);
+
+        if (isPaused)
+        {
+            obstacleImage.removeCallbacks(runnable);
+        }
+        else
+        {
+            obstacleImage.postDelayed(runnable, 8500);
+        }
     }
 
     // SOURCE: https://stackoverflow.com/questions/10621439/how-to-animate-scroll-position-how-to-scroll-smoothly
     private void makeObstaclesScroll()
     {
         scrollAnimator = ObjectAnimator.ofInt(obstacleImage, "scrollX", -1500, 1500);
-        scrollAnimator.setDuration(7000);
+        scrollAnimator.setDuration(8000);
 
         scrollAnimator.addListener(new Animator.AnimatorListener()
         {
@@ -291,35 +303,78 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View view)
             {
-                timerTask.cancel();
-
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
                 {
                     scrollAnimator.pause();
-                    isPaused = true;
                 }
+
+                isPaused = true;
+
+                timerTask.cancel();
 
                 pauseMenu = findViewById(R.id.pause_menu);
                 pauseMenu.setVisibility(View.VISIBLE);
 
-                exitButton = findViewById(R.id.exit_button);
-                exitButton.setVisibility(View.VISIBLE);
-                exitButton.setOnClickListener(new OnClickListener()
+                pauseLogo = findViewById(R.id.pause_logo);
+                pauseLogo.setVisibility(View.VISIBLE);
+
+                scoresButton = findViewById(R.id.scores_button);
+                scoresButton.setVisibility(View.VISIBLE);
+                /*scoresButton.setOnClickListener(new OnClickListener()
                 {
                     @Override
                     public void onClick(View view)
                     {
-                        pauseMenu.setVisibility(View.INVISIBLE);
-                        exitButton.setVisibility(View.INVISIBLE);
 
-                        createMoveDownTimer();
+                    }
+                });*/
+
+                menuButton = findViewById(R.id.home_button);
+                menuButton.setVisibility(View.VISIBLE);
+                menuButton.setOnClickListener(new OnClickListener()
+                {
+                    @Override
+                    public void onClick(View view)
+                    {
+                        goToMenuScreen();
+                    }
+                });
+
+                restartButton = findViewById(R.id.restart_button);
+                restartButton.setVisibility(View.VISIBLE);
+                restartButton.setOnClickListener(new OnClickListener()
+                {
+                    @Override
+                    public void onClick(View view)
+                    {
+                        // SOURCE: https://stackoverflow.com/questions/1397361/how-do-i-restart-an-android-activity
+                        recreate();
+                    }
+                });
+
+                resumeButton = findViewById(R.id.resume_button);
+                resumeButton.setVisibility(View.VISIBLE);
+                resumeButton.setOnClickListener(new OnClickListener()
+                {
+                    @Override
+                    public void onClick(View view)
+                    {
+                        isPaused = false;
 
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
                         {
                             scrollAnimator.resume();
-                            isPaused = false;
                             displayObstaclesRandomly();
                         }
+
+                        pauseMenu.setVisibility(View.INVISIBLE);
+                        resumeButton.setVisibility(View.INVISIBLE);
+                        pauseLogo.setVisibility(View.INVISIBLE);
+                        restartButton.setVisibility(View.INVISIBLE);
+                        menuButton.setVisibility(View.INVISIBLE);
+                        scoresButton.setVisibility(View.INVISIBLE);
+
+                        createMoveDownTimer();
                     }
                 });
             }
