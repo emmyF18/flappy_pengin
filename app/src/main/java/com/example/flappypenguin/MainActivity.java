@@ -18,7 +18,11 @@ import android.widget.ViewSwitcher;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintStream;
 import java.util.Random;
+import java.util.Scanner;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -49,6 +53,9 @@ public class MainActivity extends AppCompatActivity
     private ImageButton menuButton;
     private ImageButton restartButton;
     private ImageButton scoresButton;
+    private String highScoresFileName;
+    private int highScore;
+
 
     /*
     Todo:Play-test notes:
@@ -379,6 +386,53 @@ public class MainActivity extends AppCompatActivity
                 });
             }
         });
+    }
+
+    public int getFinalScore()
+    {
+        return highScore;
+    }
+
+    private void writeHighScore(int finalScore)
+    {
+        try
+        {
+            PrintStream output = new PrintStream(this.openFileOutput(highScoresFileName, this.MODE_PRIVATE));
+            output.println(finalScore + "");
+            output.close();
+        }
+        catch (IOException e)
+        {
+            Log.i("highScore", "Write failed");
+        }
+    }
+
+    private int readHighScore()
+    {
+        int currentHighScore = 0;
+
+        try
+        {
+            Scanner scanner = new Scanner(this.openFileInput(highScoresFileName));
+
+            while (scanner.hasNextInt())
+            {
+                currentHighScore = scanner.nextInt();
+            }
+
+            scanner.close();
+        }
+        catch (IOException e)
+        {
+            Log.i("highScore", "Read failed");
+        }
+
+        return currentHighScore;
+    }
+
+    private void eraseHighScore()
+    {
+        new File(this.getFilesDir(), highScoresFileName).delete();
     }
 
     private void goToMenuScreen()
