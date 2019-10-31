@@ -2,6 +2,7 @@ package com.example.flappypenguin;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -87,8 +88,6 @@ public class MainActivity extends AppCompatActivity
         countdownImageSwitcher.setOutAnimation(this, android.R.anim.fade_out);
         startCountdown();
 
-        displayObstaclesRandomly();
-
         gameOver = false;
         penguin =  findViewById(R.id.penguin);
         penguin.setFactory(new ViewSwitcher.ViewFactory()
@@ -102,8 +101,6 @@ public class MainActivity extends AppCompatActivity
                 return imgVw;
             }
         });
-        // penguin.setInAnimation(this, android.R.anim.fade_in);
-        // penguin.setOutAnimation(this, android.R.anim.fade_out);
     }
 
     // SOURCE: https://www.tutlane.com/tutorial/android/android-imageswitcher-with-examples
@@ -128,6 +125,7 @@ public class MainActivity extends AppCompatActivity
             {
                 canMoveUp = true;
                 createMoveDownTimer();
+                displayObstaclesRandomly();
 
                 countdownImageSwitcher.setImageResource(countdownImagesList[countdownImagesList.length - 1]);
                 countdownImageSwitcher.setVisibility(View.INVISIBLE);
@@ -207,21 +205,14 @@ public class MainActivity extends AppCompatActivity
                 else
                 {
                     obstacleImage.setImageResource(obstacleImagesList[randomObstacle]);
-                    obstacleImage.postDelayed(this, 8500);
+                    obstacleImage.postDelayed(this, 8000);
                     randomObstacle = random.nextInt(obstacleImagesList.length);
                     makeObstaclesScroll();
                 }
             }
         };
 
-        if (isPaused)
-        {
-            obstacleImage.removeCallbacks(runnable);
-        }
-        else
-        {
-            obstacleImage.postDelayed(runnable, 8500);
-        }
+        obstacleImage.postDelayed(runnable, 2000);
     }
 
     // SOURCE: https://stackoverflow.com/questions/10621439/how-to-animate-scroll-position-how-to-scroll-smoothly
@@ -310,14 +301,14 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View view)
             {
+                isPaused = true;
+
+                timerTask.cancel();
+
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
                 {
                     scrollAnimator.pause();
                 }
-
-                isPaused = true;
-
-                timerTask.cancel();
 
                 pauseMenu = findViewById(R.id.pause_menu);
                 pauseMenu.setVisibility(View.VISIBLE);
@@ -327,14 +318,15 @@ public class MainActivity extends AppCompatActivity
 
                 scoresButton = findViewById(R.id.scores_button);
                 scoresButton.setVisibility(View.VISIBLE);
-                /*scoresButton.setOnClickListener(new OnClickListener()
+                scoresButton.setOnClickListener(new OnClickListener()
                 {
                     @Override
                     public void onClick(View view)
                     {
-
+                        final Intent game = new Intent(MainActivity.this, HighScores.class);
+                        startActivity(game);
                     }
-                });*/
+                });
 
                 menuButton = findViewById(R.id.home_button);
                 menuButton.setVisibility(View.VISIBLE);
@@ -435,7 +427,7 @@ public class MainActivity extends AppCompatActivity
         new File(this.getFilesDir(), highScoresFileName).delete();
     }
 
-    private void goToMenuScreen()
+    public void goToMenuScreen()
     {
         finish();
     }

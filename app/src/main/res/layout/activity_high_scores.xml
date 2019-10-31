@@ -6,4 +6,79 @@
     android:layout_height="match_parent"
     tools:context=".HighScores">
 
+    <ImageView
+        android:id="@+id/scores_background"
+        android:layout_width="540dp"
+        android:layout_height="900dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/scores_background" />
+
+    <ImageView
+        android:id="@+id/scores_background_2"
+        android:layout_width="371dp"
+        android:layout_height="689dp"
+        android:layout_marginTop="43dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/scores_background"
+        app:layout_constraintVertical_bias="0.89"
+        app:srcCompat="@drawable/pause_popup_background" />
+
+    <ImageView
+        android:id="@+id/penguin_icon_right"
+        android:layout_width="87dp"
+        android:layout_height="79dp"
+        android:layout_marginTop="201dp"
+        android:layout_marginBottom="621dp"
+        app:layout_constraintBottom_toBottomOf="@+id/scores_background"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.058"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/scores_background"
+        app:layout_constraintVertical_bias="1.0"
+        app:srcCompat="@drawable/penguin_icon_right" />
+
+    <ImageView
+        android:id="@+id/penguin_icon_left"
+        android:layout_width="86dp"
+        android:layout_height="81dp"
+        android:layout_marginStart="344dp"
+        android:layout_marginLeft="344dp"
+        android:background="#00FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.157"
+        app:layout_constraintStart_toStartOf="@+id/scores_background"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.123"
+        app:srcCompat="@drawable/penguin_icon_left" />
+
+    <ImageView
+        android:id="@+id/high_scores_logo"
+        android:layout_width="187dp"
+        android:layout_height="99dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.48"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.112"
+        app:srcCompat="@drawable/high_scores_logo" />
+
+    <ImageButton
+        android:id="@+id/back_button"
+        android:layout_width="56dp"
+        android:layout_height="55dp"
+        android:background="#00FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.03"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.01999998"
+        app:srcCompat="@drawable/back_arrow" />
 </androidx.constraintlayout.widget.ConstraintLayout>

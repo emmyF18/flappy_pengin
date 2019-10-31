@@ -22,6 +22,7 @@ public class MenuActivity extends AppCompatActivity
 
     public void goToScoresScreen(View view)
     {
-
+        final Intent scores = new Intent(MenuActivity.this, HighScores.class);
+        startActivity(scores);
     }
 }
