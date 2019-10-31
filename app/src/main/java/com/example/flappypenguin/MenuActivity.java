@@ -19,4 +19,9 @@ public class MenuActivity extends AppCompatActivity
         final Intent game = new Intent(MenuActivity.this, MainActivity.class);
         startActivity(game);
     }
+
+    public void goToScoresScreen(View view)
+    {
+
+    }
 }
