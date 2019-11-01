@@ -32,7 +32,6 @@ public class MainActivity extends AppCompatActivity
     final private Integer[] countdownImagesList = {R.drawable.countdown_3, R.drawable.countdown_2, R.drawable.countdown_1, R.drawable.countdown_start, R.drawable.blank};
     final private Integer[] obstacleImagesList = {R.drawable.ice_obstacle, R.drawable.ice_obstacle2, R.drawable.snowman_obstacle};
     final private Integer[] penguinFlapList = {R.drawable.penguin_sprite, R.drawable.penguin_falling};
-    final Handler handler = new Handler();
     final float penguinFallSpeed = 3.3f;
     final int penguinFlySpeed = 235;
     boolean gameOver = false;
@@ -47,7 +46,6 @@ public class MainActivity extends AppCompatActivity
     private boolean canMoveUp = false;
     private ImageButton resumeButton;
     private ImageView pauseMenu;
-    private TimerTask timerTask;
     private boolean isPaused = false;
     private int penguinFalling = 0;
     private ImageView pauseLogo;
@@ -56,6 +54,7 @@ public class MainActivity extends AppCompatActivity
     private ImageButton scoresButton;
     private String highScoresFileName;
     private int highScore;
+    private Collision collision;
 
 
     /*
@@ -89,7 +88,7 @@ public class MainActivity extends AppCompatActivity
         startCountdown();
 
         gameOver = false;
-        penguin =  findViewById(R.id.penguin);
+        penguin = findViewById(R.id.penguin);
         penguin.setFactory(new ViewSwitcher.ViewFactory()
         {
             @Override
@@ -101,6 +100,7 @@ public class MainActivity extends AppCompatActivity
                 return imgVw;
             }
         });
+        collision = new Collision(obstacleImage, penguin);
     }
 
     // SOURCE: https://www.tutlane.com/tutorial/android/android-imageswitcher-with-examples
@@ -159,16 +159,14 @@ public class MainActivity extends AppCompatActivity
         penguin = findViewById(R.id.penguin);
         height = findViewById(R.id.gameScreen).getHeight();
 
-        if (!gameOver && canMoveUp)
+        if (!gameOver && canMoveUp)// && !collision.ReportCollision())
         {
             if (penguin.getY() - penguinFlySpeed >= 5)
             {
                 penguin.setY(penguin.getY() - penguinFlySpeed);
-                Log.i("penguinY", penguin.getY() + "");
                 penguinFalling = 0;
                 penguin.setImageResource(penguinFlapList[penguinFalling]);
-            }
-            else
+            } else
             {
                 penguin.setY(5);
                 gameOver();
@@ -201,8 +199,7 @@ public class MainActivity extends AppCompatActivity
                 if (isPaused)
                 {
                     obstacleImage.removeCallbacks(this);
-                }
-                else
+                } else
                 {
                     obstacleImage.setImageResource(obstacleImagesList[randomObstacle]);
                     obstacleImage.postDelayed(this, 8000);
@@ -254,7 +251,7 @@ public class MainActivity extends AppCompatActivity
     //timer code example: https://examples.javacodegeeks.com/android/core/activity/android-timertask-example/
     private void createMoveDownTimer()
     {
-        timerTask = movePenguinDown();
+        TimerTask timerTask = movePenguinDown();
         Timer penguinDown = new Timer();
 
         penguinDown.schedule(timerTask, 0, 10);
@@ -262,6 +259,8 @@ public class MainActivity extends AppCompatActivity
 
     private TimerTask movePenguinDown()
     {
+         final Handler handler = new Handler();
+
         return new TimerTask()
         {
             @Override
@@ -273,15 +272,14 @@ public class MainActivity extends AppCompatActivity
                     {
                         penguin = findViewById(R.id.penguin);
                         height = findViewById(R.id.gameScreen).getHeight();
-
-                        if ((penguin.getY() < height - 200) && !gameOver)
+                        if ((penguin.getY() < height - 200) && !gameOver) // && !collision.ReportCollision())
                         {
                             penguin.setY(penguin.getY() + penguinFallSpeed);
                             penguinFalling = 1;
                             penguin.setImageResource(penguinFlapList[penguinFalling]);
 
-
-                        } else
+                        }
+                        else
                         {
                             gameOver();
                         }
@@ -309,6 +307,10 @@ public class MainActivity extends AppCompatActivity
                 {
                     scrollAnimator.pause();
                 }
+
+                isPaused = true;
+
+                //timerTask.cancel();
 
                 pauseMenu = findViewById(R.id.pause_menu);
                 pauseMenu.setVisibility(View.VISIBLE);
@@ -431,4 +433,5 @@ public class MainActivity extends AppCompatActivity
     {
         finish();
     }
+
 }
