@@ -23,9 +23,9 @@ public class Collision
     }
     private void createCollisionTimer()
     {
-        TimerTask timerTask = detectCollision();
-        Timer penguinDown = new Timer();
-        penguinDown.schedule(timerTask, 0, 100);
+        //TimerTask timerTask = detectCollision();
+        //Timer penguinDown = new Timer();
+        //penguinDown.schedule(timerTask, 0, 100);
     }
     private TimerTask detectCollision()
     {
