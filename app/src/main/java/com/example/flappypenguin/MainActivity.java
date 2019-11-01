@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity
     private ImageButton menuButton;
     private ImageButton restartButton;
     private ImageButton scoresButton;
+    private TimerTask timerTask;
     private String highScoresFileName;
     private int highScore;
     private Collision collision;
@@ -72,6 +73,8 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         listenForTouch();
         displayPauseScreen();
+
+        // SOURCE: https://www.tutlane.com/tutorial/android/android-imageswitcher-with-examples
         countdownImageSwitcher = findViewById(R.id.countdown);
         countdownImageSwitcher.setFactory(new ViewSwitcher.ViewFactory()
         {
@@ -100,6 +103,7 @@ public class MainActivity extends AppCompatActivity
                 return imgVw;
             }
         });
+
         collision = new Collision(obstacleImage, penguin);
     }
 
@@ -184,7 +188,6 @@ public class MainActivity extends AppCompatActivity
     }
 
     // SOURCE: https://stackoverflow.com/questions/21559405/how-to-display-image-automatically-after-a-random-time
-    // SOURCE: https://stackoverflow.com/questions/23357124/android-how-to-pause-and-resume-runnable-thread
     private void displayObstaclesRandomly()
     {
         final Random random = new Random();
@@ -198,6 +201,7 @@ public class MainActivity extends AppCompatActivity
             {
                 if (isPaused)
                 {
+                    // SOURCE: https://stackoverflow.com/questions/23357124/android-how-to-pause-and-resume-runnable-thread
                     obstacleImage.removeCallbacks(this);
                 } else
                 {
@@ -259,7 +263,7 @@ public class MainActivity extends AppCompatActivity
 
     private TimerTask movePenguinDown()
     {
-         final Handler handler = new Handler();
+        final Handler handler = new Handler();
 
         return new TimerTask()
         {
@@ -303,14 +307,14 @@ public class MainActivity extends AppCompatActivity
 
                 timerTask.cancel();
 
+                // SOURCE: https://developer.android.com/reference/android/os/Build.VERSION_CODES
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
                 {
+                    // SOURCE: https://developer.android.com/reference/android/animation/Animator
                     scrollAnimator.pause();
                 }
 
                 isPaused = true;
-
-                //timerTask.cancel();
 
                 pauseMenu = findViewById(R.id.pause_menu);
                 pauseMenu.setVisibility(View.VISIBLE);
@@ -364,6 +368,7 @@ public class MainActivity extends AppCompatActivity
 
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
                         {
+                            https://developer.android.com/reference/android/animation/Animator
                             scrollAnimator.resume();
                             displayObstaclesRandomly();
                         }
@@ -382,12 +387,12 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
-    public int getFinalScore()
+    /*public int getFinalScore()
     {
         return highScore;
-    }
+    }*/
 
-    private void writeHighScore(int finalScore)
+    /*private void writeHighScore(int finalScore)
     {
         try
         {
@@ -399,9 +404,9 @@ public class MainActivity extends AppCompatActivity
         {
             Log.i("highScore", "Write failed");
         }
-    }
+    }*/
 
-    private int readHighScore()
+    /*private int readHighScore()
     {
         int currentHighScore = 0;
 
@@ -422,12 +427,12 @@ public class MainActivity extends AppCompatActivity
         }
 
         return currentHighScore;
-    }
+    }*/
 
-    private void eraseHighScore()
+    /*private void eraseHighScore()
     {
         new File(this.getFilesDir(), highScoresFileName).delete();
-    }
+    }*/
 
     public void goToMenuScreen()
     {
