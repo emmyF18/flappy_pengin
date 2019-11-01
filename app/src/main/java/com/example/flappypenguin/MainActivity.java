@@ -52,11 +52,17 @@ public class MainActivity extends AppCompatActivity
     private ImageButton menuButton;
     private ImageButton restartButton;
     private ImageButton scoresButton;
+<<<<<<< HEAD
     private TimerTask timerTask;
     private String highScoresFileName;
     private int highScore;
     private Collision collision;
 
+=======
+    //private String highScoresFileName;
+    //private int highScore;
+    private TimerTask timerTask;
+>>>>>>> 814c30265210412414b160f96e42f93bc3f9cfb7
 
     /*
     Todo:Play-test notes:
@@ -103,8 +109,12 @@ public class MainActivity extends AppCompatActivity
                 return imgVw;
             }
         });
+<<<<<<< HEAD
 
         collision = new Collision(obstacleImage, penguin);
+=======
+        Collision collision = new Collision(obstacleImage, penguin);
+>>>>>>> 814c30265210412414b160f96e42f93bc3f9cfb7
     }
 
     // SOURCE: https://www.tutlane.com/tutorial/android/android-imageswitcher-with-examples
@@ -255,7 +265,7 @@ public class MainActivity extends AppCompatActivity
     //timer code example: https://examples.javacodegeeks.com/android/core/activity/android-timertask-example/
     private void createMoveDownTimer()
     {
-        TimerTask timerTask = movePenguinDown();
+        timerTask = movePenguinDown();
         Timer penguinDown = new Timer();
 
         penguinDown.schedule(timerTask, 0, 10);
@@ -387,6 +397,7 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
+<<<<<<< HEAD
     /*public int getFinalScore()
     {
         return highScore;
@@ -433,6 +444,54 @@ public class MainActivity extends AppCompatActivity
     {
         new File(this.getFilesDir(), highScoresFileName).delete();
     }*/
+=======
+//    public int getFinalScore()
+//    {
+//        return highScore;
+//    }
+
+//    private void writeHighScore(int finalScore)
+//    {
+//        try
+//        {
+//            PrintStream output = new PrintStream(this.openFileOutput(highScoresFileName, this.MODE_PRIVATE));
+//            output.println(finalScore + "");
+//            output.close();
+//        }
+//        catch (IOException e)
+//        {
+//            Log.i("highScore", "Write failed");
+//        }
+//    }
+
+//    private int readHighScore()
+//    {
+//        int currentHighScore = 0;
+//
+//        try
+//        {
+//            Scanner scanner = new Scanner(this.openFileInput(highScoresFileName));
+//
+//            while (scanner.hasNextInt())
+//            {
+//                currentHighScore = scanner.nextInt();
+//            }
+//
+//            scanner.close();
+//        }
+//        catch (IOException e)
+//        {
+//            Log.i("highScore", "Read failed");
+//        }
+//
+//        return currentHighScore;
+//    }
+
+//    private void eraseHighScore()
+//    {
+//        new File(this.getFilesDir(), highScoresFileName).delete();
+//    }
+>>>>>>> 814c30265210412414b160f96e42f93bc3f9cfb7
 
     public void goToMenuScreen()
     {
